@@ -734,14 +734,12 @@ ggplot(pData(target_demoData),
        aes(x = region, fill = region,
            y = assayDataElement(target_demoData["PDHA1", ],
                                 elt = "q_norm"))) +
-  geom_violin() +
-  geom_jitter(width = .2) +
-  labs(y = "PDHA1 Expression") +
-  scale_y_continuous(trans = "log2") +
-  facet_wrap(~class) +
-  theme_bw()
-                       
-                       
+    geom_violin() +
+    geom_jitter(width = .2) +
+    labs(y = "PDHA1 Expression") +
+    scale_y_continuous(trans = "log2") +
+    facet_wrap(~class) +
+    theme_bw()
 ```
 
 ```{r}

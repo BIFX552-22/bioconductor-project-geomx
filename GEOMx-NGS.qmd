@@ -11,9 +11,17 @@ editor: visual
 
 The GeoMx Digital Spatial Profiler (DSP) is a platform for capturing spatially resolved high-plex gene (or protein) expression data from tissue. In particular, formalin-fixed paraffin-embedded (FFPE) or fresh-frozen (FF) tissue sections are stained with barcoded in-situ hybridization probes that bind to endogenous mRNA transcripts. The user then selects regions of the interest (ROI) to profile; if desired, each ROI segment can be further sub-divided into areas of illumination (AOI) based on tissue morphology. The GeoMx then photo-cleaves and collects expression barcodes for each AOI segment separately for downstream sequencing and data processing.
 
+::: notes
+Speaker notes go here
+:::
+
 ## **Motivation & Scope**
 
 The motivation for this vignette is to enable scientists to work with GeoMx-NGS gene expression data and understand a standard data analysis workflow.
+
+::: notes
+Speaker notes go here
+:::
 
 ## **Data**
 
@@ -21,22 +29,22 @@ The dataset includes 4 diabetic kidney disease (DKD) and 3 healthy kidney tissue
 
 Before we begin, we will shift any expression counts with a value of 0 to 1 to enable in downstream transformations.
 
-## **Segment QC**
-
-::: columns
-::: {.column width="50%"}
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-8-1.png)
-
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-10-1.png)
+::: notes
+Speaker notes go here
 :::
 
-::: {.column width="50%"}
+## **Segment QC**
+
+::: r-stack
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-8-1.png)
+
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-9-1.png)
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-11-1.png)
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-12-1.png)
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-13-1.png)
-:::
 :::
 
 ## **Probe QC**
@@ -49,15 +57,27 @@ A probe is removed globally from the dataset if either of the following is true:
 
 A probe is removed locally (from a given segment) if the probe is an outlier according to the Grubb's test in that segment.
 
+::: notes
+Speaker notes go here
+:::
+
 ## **Segment Gene Detection**
 
 We first filter out segments with exceptionally low signal.
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-25-1.png)
 
+::: notes
+Speaker notes go here
+:::
+
 ## **Gene Filtering**
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-30-1.png)
+
+::: notes
+Speaker notes go here
+:::
 
 ## **Normalization**
 
@@ -65,20 +85,20 @@ We will now normalize the GeoMx data for downstream visualizations and different
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-32-1.png)
 
+::: notes
+Speaker notes go here
+:::
+
 ## Effects of Normalization
 
 We will use Q3 normalized data moving forward. We use the `normalize` function from `NanoStringNCTools` to create normalization factors reflecting each data type. 
 
-::: columns
-::: {.column width="50%"}
+::: r-stack
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-34-1.png)
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-35-1.png)
-:::
 
-::: {.column width="50%"}
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-36-1.png)
-:::
 :::
 
 ## **Visualizing DE Genes**
@@ -87,13 +107,25 @@ A canonical visualization for interpreting differential gene expression results 
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-44-1.png)
 
+::: notes
+Speaker notes go here
+:::
+
 ## **Plotting Genes of Interest**
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-38-1.png)
 
+::: notes
+Speaker notes go here
+:::
+
 ## **Heatmap of Significant Genes**
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-48-1.png)
+
+::: notes
+Speaker notes go here
+:::
 
 ## **Additional Analysis Methods**
 
@@ -101,6 +133,18 @@ A canonical visualization for interpreting differential gene expression results 
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-49-1.png)
 
+::: notes
+Speaker notes go here
+:::
+
 ## Interesting thoughts
 
+::: notes
+Speaker notes go here
+:::
+
 ## Challenges
+
+::: notes
+Speaker notes go here
+:::

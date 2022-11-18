@@ -6,11 +6,11 @@
 <script src="GEOMx-NGS_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="GEOMx-NGS_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="GEOMx-NGS_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="GEOMx-NGS_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="GEOMx-NGS_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.1.189">
 
-  <meta name="author" content="Kristen Wingert">
-  <title>GEOMx</title>
+  <meta name="author" content="Jason Reeves1, Prajan Divakar1, Nicole Ortogero1, Maddy Griswold1, Zhi Yang1, Stephanie Zimmerman1, Rona Vitancol1 and David Henderson">
+  <title>Analyzing GeoMx-NGS RNA Expression Data with GeomxTools</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -319,49 +319,267 @@
     }
   </style>
 </head>
-<body class="quarto-light">
+<body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">GEOMx</h1>
-  <p class="author">Kristen Wingert</p>
+  <h1 class="title">Analyzing GeoMx-NGS RNA Expression Data with GeomxTools</h1>
+  <p class="author">Jason Reeves1, Prajan Divakar1, Nicole Ortogero1, Maddy Griswold1, Zhi Yang1, Stephanie Zimmerman1, Rona Vitancol1 and David Henderson</p>
 </section>
 
-<section id="slide-1" class="slide level2">
-<h2>Slide 1</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section>
+<section id="introduction" class="title-slide slide level1 center">
+<h1><strong>Introduction</strong></h1>
+<p>The GeoMx Digital Spatial Profiler (DSP) is a platform for capturing spatially resolved high-plex gene (or protein) expression data from tissue. In particular, formalin-fixed paraffin-embedded (FFPE) or fresh-frozen (FF) tissue sections are stained with barcoded in-situ hybridization probes that bind to endogenous mRNA transcripts. The user then selects regions of the interest (ROI) to profile; if desired, each ROI segment can be further sub-divided into areas of illumination (AOI) based on tissue morphology. The GeoMx then photo-cleaves and collects expression barcodes for each AOI segment separately for downstream sequencing and data processing.</p>
+<aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="motivation-scope" class="slide level2">
+<h2><strong>Motivation &amp; Scope</strong></h2>
+<p>The motivation for this vignette is to enable scientists to work with GeoMx-NGS gene expression data and understand a standard data analysis workflow.</p>
+<aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="data" class="slide level2">
+<h2><strong>Data</strong></h2>
+<p>The dataset includes 4 diabetic kidney disease (DKD) and 3 healthy kidney tissue samples. Regions of interest (ROI) were spatially profiled to focus on two different kidney structures: tubules or glomeruli. One glomerular ROI contains the entirety of a single glomerulus. Each tubular ROI contains multiple tubules that were segmented into distal (PanCK+) and proximal (PanCK-) tubule areas of illumination (AOI).</p>
+<p>Before we begin, we will shift any expression counts with a value of 0 to 1 to enable in downstream transformations.</p>
+<aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="segment-qc" class="slide level2">
+<h2><strong>Segment QC</strong></h2>
+<div class="r-stack">
 <p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-8-1.png"></p>
-</div><div class="column" style="width:50%;">
 <p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-9-1.png"></p>
-</div>
-</div>
-</section>
-<section id="slide-2" class="slide level2">
-<h2>Slide 2</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-10-1.png" width="3520"></p>
-</div><div class="column" style="width:50%;">
 <p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-11-1.png"></p>
-</div>
-</div>
-</section>
-<section id="slide-3" class="slide level2">
-<h2>Slide 3</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-12-1.png"></p>
-</div><div class="column" style="width:50%;">
 <p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-13-1.png"></p>
 </div>
+</section>
+<section id="probe-qc" class="slide level2">
+<h2><strong>Probe QC</strong></h2>
+<p>A probe is removed globally from the dataset if either of the following is true:</p>
+<ul>
+<li><p>the geometric mean of that probe’s counts from all segments divided by the geometric mean of all probe counts representing the target from all segments is less than 0.1</p></li>
+<li><p>the probe is an outlier according to the Grubb’s test in at least 20% of the segments</p></li>
+</ul>
+<p>A probe is removed locally (from a given segment) if the probe is an outlier according to the Grubb’s test in that segment.</p>
+<aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="segment-gene-detection" class="slide level2">
+<h2><strong>Segment Gene Detection</strong></h2>
+<p>We first filter out segments with exceptionally low signal.</p>
+
+<img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-25-1.png" class="r-stretch"><aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="gene-filtering" class="slide level2">
+<h2><strong>Gene Filtering</strong></h2>
+
+<img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-30-1.png" class="r-stretch"><aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="normalization" class="slide level2">
+<h2><strong>Normalization</strong></h2>
+<p>We will now normalize the GeoMx data for downstream visualizations and differential expression.</p>
+
+<img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-32-1.png" class="r-stretch"><aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="effects-of-normalization" class="slide level2">
+<h2>Effects of Normalization</h2>
+<p>We will use Q3 normalized data moving forward. We use the&nbsp;<code>normalize</code>&nbsp;function from&nbsp;<code>NanoStringNCTools</code>&nbsp;to create normalization factors reflecting each data type.&nbsp;</p>
+<div class="r-stack">
+<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-34-1.png"></p>
+<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-35-1.png"></p>
+<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-36-1.png"></p>
 </div>
-<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-14-1.png" style="width:108mm"></p>
+</section>
+<section id="visualizing-de-genes" class="slide level2">
+<h2><strong>Visualizing DE Genes</strong></h2>
+<p>A canonical visualization for interpreting differential gene expression results is the volcano plot.&nbsp;</p>
+
+<img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-44-1.png" class="r-stretch"><aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="plotting-genes-of-interest" class="slide level2">
+<h2><strong>Plotting Genes of Interest</strong></h2>
+
+<img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-38-1.png" class="r-stretch"><aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="heatmap-of-significant-genes" class="slide level2">
+<h2><strong>Heatmap of Significant Genes</strong></h2>
+
+<img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-48-1.png" class="r-stretch"><aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="additional-analysis-methods" class="slide level2">
+<h2><strong>Additional Analysis Methods</strong></h2>
+<h3 id="ma-plot"><strong>MA Plot</strong></h3>
+
+<img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-49-1.png" class="r-stretch"><aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interesting-thoughts" class="slide level2">
+<h2>Interesting thoughts</h2>
+<aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="challenges" class="slide level2">
+<h2>Challenges</h2>
+<aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <div class="footer footer-default">
 
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
