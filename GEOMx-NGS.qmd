@@ -1,44 +1,106 @@
 ---
-title: "GEOMx"
-author: Kristen Wingert
-format: revealjs
+title: "Analyzing GeoMx-NGS RNA Expression Data with GeomxTools"
+author: Jason Reeves1, Prajan Divakar1, Nicole Ortogero1, Maddy Griswold1, Zhi Yang1, Stephanie Zimmerman1, Rona Vitancol1 and David Henderson
+format: 
+  revealjs:
+   theme: moon
 editor: visual
 ---
 
-## Abstract
+# **Introduction**
+
+The GeoMx Digital Spatial Profiler (DSP) is a platform for capturing spatially resolved high-plex gene (or protein) expression data from tissue. In particular, formalin-fixed paraffin-embedded (FFPE) or fresh-frozen (FF) tissue sections are stained with barcoded in-situ hybridization probes that bind to endogenous mRNA transcripts. The user then selects regions of the interest (ROI) to profile; if desired, each ROI segment can be further sub-divided into areas of illumination (AOI) based on tissue morphology. The GeoMx then photo-cleaves and collects expression barcodes for each AOI segment separately for downstream sequencing and data processing.
+
+## **Motivation & Scope**
+
+The motivation for this vignette is to enable scientists to work with GeoMx-NGS gene expression data and understand a standard data analysis workflow.
+
+## **Data**
+
+The dataset includes 4 diabetic kidney disease (DKD) and 3 healthy kidney tissue samples. Regions of interest (ROI) were spatially profiled to focus on two different kidney structures: tubules or glomeruli. One glomerular ROI contains the entirety of a single glomerulus. Each tubular ROI contains multiple tubules that were segmented into distal (PanCK+) and proximal (PanCK-) tubule areas of illumination (AOI).
+
+Before we begin, we will shift any expression counts with a value of 0 to 1 to enable in downstream transformations.
+
+## **Segment QC**
 
 ::: columns
 ::: {.column width="50%"}
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-8-1.png)
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-10-1.png)
 :::
 
 ::: {.column width="50%"}
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-9-1.png)
-:::
-:::
 
-## Slide 2
-
-::: columns
-::: {.column width="50%"}
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-10-1.png){width="3520"}
-:::
-
-::: {.column width="50%"}
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-11-1.png)
-:::
-:::
-
-## Slide 3
-
-::: columns
-::: {.column width="50%"}
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-12-1.png)
-:::
 
-::: {.column width="50%"}
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-13-1.png)
 :::
 :::
 
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-14-1.png){width="108mm"}
+## **Probe QC**
+
+A probe is removed globally from the dataset if either of the following is true:
+
+-   the geometric mean of that probe's counts from all segments divided by the geometric mean of all probe counts representing the target from all segments is less than 0.1
+
+-   the probe is an outlier according to the Grubb's test in at least 20% of the segments
+
+A probe is removed locally (from a given segment) if the probe is an outlier according to the Grubb's test in that segment.
+
+## **Segment Gene Detection**
+
+We first filter out segments with exceptionally low signal.
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-25-1.png)
+
+## **Gene Filtering**
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-30-1.png)
+
+## **Normalization**
+
+We will now normalize the GeoMx data for downstream visualizations and differential expression.
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-32-1.png)
+
+## Effects of Normalization
+
+We will use Q3 normalized data moving forward. We use the `normalize` function from `NanoStringNCTools` to create normalization factors reflecting each data type. 
+
+::: columns
+::: {.column width="50%"}
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-34-1.png)
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-35-1.png)
+:::
+
+::: {.column width="50%"}
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-36-1.png)
+:::
+:::
+
+## **Visualizing DE Genes**
+
+A canonical visualization for interpreting differential gene expression results is the volcano plot. 
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-44-1.png)
+
+## **Plotting Genes of Interest**
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-38-1.png)
+
+## **Heatmap of Significant Genes**
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-48-1.png)
+
+## **Additional Analysis Methods**
+
+### **MA Plot**
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-49-1.png)
+
+## Interesting thoughts
+
+## Challenges

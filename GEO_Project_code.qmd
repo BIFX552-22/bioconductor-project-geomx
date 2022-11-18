@@ -4,9 +4,6 @@ format: html
 editor: visual
 ---
 
-
-
-
 ```{r, warning - FALSE}
 
 if (!require("BiocManager", quietly = TRUE))
@@ -170,7 +167,6 @@ QC_histogram <- function(assay_data = NULL,
     plt
 }
 ```
-
 
 ```{r}
 QC_histogram(sData(demoData), "Trimmed (%)", col_by, 80)
@@ -427,7 +423,6 @@ ggplot(plot_detect, aes(x = as.factor(Freq), y = Rate, fill = Rate)) +
          y = "Genes Detected, % of Panel > LOQ")
 ```
 
-
 ```{r}
 # Subset to target genes detected in at least 10% of the samples.
 #   Also manually include the negative control probe, for downstream use
@@ -442,7 +437,6 @@ dim(target_demoData)
 # retain only detected genes of interest
 goi <- goi[goi %in% rownames(target_demoData)]
 ```
-
 
 ```{r}
 library(reshape2)  # for melt
@@ -505,7 +499,6 @@ target_demoData <- normalize(target_demoData ,
                              toElt = "neg_norm")
 ```
 
-
 ```{r}
 boxplot(exprs(target_demoData)[,1:10],
         col = "#9EDAE5", main = "Raw Counts",
@@ -513,14 +506,12 @@ boxplot(exprs(target_demoData)[,1:10],
         ylab = "Counts, Raw")
 ```
 
-
 ```{r}
 boxplot(assayDataElement(target_demoData[,1:10], elt = "q_norm"),
         col = "#2CA02C", main = "Q3 Norm Counts",
         log = "y", names = 1:10, xlab = "Segment",
         ylab = "Counts, Q3 Normalized")
 ```
-
 
 ```{r}
 boxplot(assayDataElement(target_demoData[,1:10], elt = "neg_norm"),
@@ -548,7 +539,6 @@ ggplot(pData(target_demoData),
 
 ```
 
-
 ```{r}
 
 # run tSNE
@@ -562,7 +552,6 @@ ggplot(pData(target_demoData),
     geom_point(size = 3) +
     theme_bw()
 ```
-
 
 ```{r}
 library(pheatmap)  # for pheatmap
@@ -593,7 +582,6 @@ pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),
          annotation_col = 
              pData(target_demoData)[, c("class", "segment", "region")])
 ```
-
 
 ```{r}
 # convert test variables to factors
@@ -633,7 +621,6 @@ for(status in c("DKD", "normal")) {
     results <- rbind(results, r_test)
 }
 ```
-
 
 ```{r}
 
@@ -679,13 +666,11 @@ for(region in c("glomerulus", "tubule")) {
 }
 ```
 
-
 ```{r}
 kable(subset(results2, Gene %in% goi & Subset == "tubule"), digits = 3,
       caption = "DE results for Genes of Interest",
       align = "lc", row.names = FALSE)
 ```
-
 
 ```{r}
 library(ggrepel) 
@@ -743,21 +728,21 @@ ggplot(results,
 kable(subset(results, Gene %in% c('PDHA1','ITGB1')), row.names = FALSE)
 ```
 
-
 ```{r}
 # show expression for a single target: PDHA1
 ggplot(pData(target_demoData),
        aes(x = region, fill = region,
            y = assayDataElement(target_demoData["PDHA1", ],
                                 elt = "q_norm"))) +
-    geom_violin() +
-    geom_jitter(width = .2) +
-    labs(y = "PDHA1 Expression") +
-    scale_y_continuous(trans = "log2") +
-    facet_wrap(~class) +
-    theme_bw()
+  geom_violin() +
+  geom_jitter(width = .2) +
+  labs(y = "PDHA1 Expression") +
+  scale_y_continuous(trans = "log2") +
+  facet_wrap(~class) +
+  theme_bw()
+                       
+                       
 ```
-
 
 ```{r}
 
@@ -786,7 +771,6 @@ ggplot(pData(target_demoData),
     facet_wrap(~class)
 ```
 
-
 ```{r}
 # select top significant genes based on significance, plot with pheatmap
 GOI <- unique(subset(results, `FDR` < 0.001)$Gene)
@@ -802,7 +786,6 @@ pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),
          color = colorRampPalette(c("purple3", "black", "yellow2"))(120),
          annotation_col = pData(target_demoData)[, c("region", "class")])
 ```
-
 
 ```{r}
 results$MeanExp <-
@@ -835,11 +818,7 @@ ggplot(subset(results, !Gene %in% neg_probes),
     facet_wrap(~Subset, nrow = 2, ncol = 1)
 ```
 
-
-
 ```{r}
 sessionInfo()
 
 ```
-
-
