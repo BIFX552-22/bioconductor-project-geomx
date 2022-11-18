@@ -109,6 +109,26 @@ modules <- gsub(".pkc", "", pkcs)
 kable(data.frame(PKCs = pkcs, modules = modules))
 ```
 
+## **GeoMxSet Object Overview**
+
+In the section 'Loading the Demo Data', we see that the `demoData` object is stored as a `GeoMxSet Object`. `GeoMxSet` objects are based on `ExpressionSet` objects, and have many similar functions as those described on Bioconductor. All expression, annotation, and probe information are linked and stored together as shown in the schematic below. There are a few key ways to access the data after we create a GeoMxSet Object. We use these throughout the vignette.
+
+![](GeoMxSet%20Object%20Overview.png)
+
+As is shown above the GeoMxSet object consists of 3 or more elements.
+
+-   Expression count matrices - accessed with `exprs(object)` to return the matrix.
+
+    -   As we progress through the analysis we will add new expression matrices to expression slots, or elements (`elt`), which can be accessed with `assayDataElement(object, elt = ...)`
+
+-   Segment & Sample annotations - accessed with `pData(object)`
+
+-   Probe & Target information - accessed with `fData(object)`
+
+-   To learn more about other accessory functions type: `?GeomxTools::sData`
+
+Both eSets and GeoMxSets use `esApply` to extend the [`apply`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/apply) function to such objects. In addition to the `esApply` function defined by the `ExpressionSet` class, we have built the `assayDataApply` function to allow you to select which expression matrix `elt` you wish to use with the `esApply` function.
+
 ## **QC & Pre-processing**
 
 ![](QCandPreprocessing.png)
@@ -897,52 +917,6 @@ kable(subset(results, Gene %in% c('PDHA1','ITGB1')), row.names = FALSE)
 
 Here we see that while these genes are significantly enriched in a structure, the structure-specific expression is also specific to the healthy tissue.
 
-Let's look at the distribution across tissue structures for PDHA1.
-
-```{r}
-# show expression for a single target: PDHA1
-ggplot(pData(target_demoData),
-       aes(x = region, fill = region,
-           y = assayDataElement(target_demoData["PDHA1", ],
-                                elt = "q_norm"))) +
-    geom_violin() +
-    geom_jitter(width = .2) +
-    labs(y = "PDHA1 Expression") +
-    scale_y_continuous(trans = "log2") +
-    facet_wrap(~class) +
-    theme_bw()
-```
-
-Now we can plot these two targets against each other to show the mutually exclusive expression pattern that can be used to easily distinguish the two structures. The dashed vertical line represents the maximum observed PDHA1 expression in glomeruli and the horizontal line represents the maximum observed ITGB1 expression in the tubules.
-
-```{r}
-glom <- pData(target_demoData)$region == "glomerulus"
-
-# show expression of PDHA1 vs ITGB1
-ggplot(pData(target_demoData),
-       aes(x = assayDataElement(target_demoData["PDHA1", ],
-                                elt = "q_norm"),
-           y = assayDataElement(target_demoData["ITGB1", ],
-                                elt = "q_norm"),
-           color = region)) +
-    geom_vline(xintercept =
-                   max(assayDataElement(target_demoData["PDHA1", glom],
-                                        elt = "q_norm")),
-               lty = "dashed", col = "darkgray") +
-    geom_hline(yintercept =
-                   max(assayDataElement(target_demoData["ITGB1", !glom],
-                                        elt = "q_norm")),
-               lty = "dashed", col = "darkgray") +
-    geom_point(size = 3) +
-    theme_bw() +
-    scale_x_continuous(trans = "log2") + 
-    scale_y_continuous(trans = "log2") +
-    labs(x = "PDHA1 Expression", y = "ITGB1 Expression") +
-    facet_wrap(~class)
-```
-
-These results suggest both of these genes become less specific during the disease process.
-
 ### **Heatmap of Significant Genes**
 
 In addition to generating individual gene box plots or volcano plots, we can again create a heatmap from our data. This time rather than utilizing CV to select genes, we can use the P-value or FDR values to select genes. Here, we plot all genes with an FDR \< 0.001.
@@ -965,22 +939,4 @@ pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),
 
 ## 
 
-## **GeoMxSet Object Overview**
-
-In the section 'Loading the Demo Data', we see that the `demoData` object is stored as a `GeoMxSet Object`. `GeoMxSet` objects are based on `ExpressionSet` objects, and have many similar functions as those described on Bioconductor. All expression, annotation, and probe information are linked and stored together as shown in the schematic below. There are a few key ways to access the data after we create a GeoMxSet Object. We use these throughout the vignette.
-
-![](GeoMxSet%20Object%20Overview.png)
-
-As is shown above the GeoMxSet object consists of 3 or more elements.
-
--   Expression count matrices - accessed with `exprs(object)` to return the matrix.
-
-    -   As we progress through the analysis we will add new expression matrices to expression slots, or elements (`elt`), which can be accessed with `assayDataElement(object, elt = ...)`
-
--   Segment & Sample annotations - accessed with `pData(object)`
-
--   Probe & Target information - accessed with `fData(object)`
-
--   To learn more about other accessory functions type: `?GeomxTools::sData`
-
-Both eSets and GeoMxSets use `esApply` to extend the [`apply`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/apply) function to such objects. In addition to the `esApply` function defined by the `ExpressionSet` class, we have built the `assayDataApply` function to allow you to select which expression matrix `elt` you wish to use with the `esApply` function.
+## 
