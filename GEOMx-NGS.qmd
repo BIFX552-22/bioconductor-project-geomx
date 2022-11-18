@@ -36,15 +36,15 @@ Speaker notes go here
 ## **Segment QC**
 
 ::: r-stack
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-8-1.png)
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-8-1.png){.fragment width="1950" height="550"}
 
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-9-1.png)
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-9-1.png){.fragment width="1950" height="550"}
 
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-11-1.png)
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-11-1.png){.fragment width="1950" height="550"}
 
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-12-1.png)
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-12-1.png){.fragment width="1950" height="550"}
 
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-13-1.png)
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-13-1.png){.fragment width="1950" height="550"}
 :::
 
 ## **Probe QC**
@@ -94,11 +94,11 @@ Speaker notes go here
 We will use Q3 normalized data moving forward. We use the `normalize` function from `NanoStringNCTools` to create normalization factors reflecting each data type. 
 
 ::: r-stack
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-34-1.png)
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-34-1.png){.fragment width="1150" height="450"}
 
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-35-1.png)
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-35-1.png){.fragment width="1150" height="450"}
 
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-36-1.png)
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-36-1.png){.fragment width="1150" height="450"}
 :::
 
 ## **Visualizing DE Genes**
