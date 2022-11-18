@@ -1,0 +1,44 @@
+---
+title: "GEOMx"
+author: Kristen Wingert
+format: revealjs
+editor: visual
+---
+
+## Abstract
+
+::: columns
+::: {.column width="50%"}
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-8-1.png)
+:::
+
+::: {.column width="50%"}
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-9-1.png)
+:::
+:::
+
+## Slide 2
+
+::: columns
+::: {.column width="50%"}
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-10-1.png){width="3520"}
+:::
+
+::: {.column width="50%"}
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-11-1.png)
+:::
+:::
+
+## Slide 3
+
+::: columns
+::: {.column width="50%"}
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-12-1.png)
+:::
+
+::: {.column width="50%"}
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-13-1.png)
+:::
+:::
+
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-14-1.png){width="108mm"}
