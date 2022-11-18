@@ -1,0 +1,50 @@
+---
+title: "Analyzing GeoMx-NGS RNA Expression Data with GeomxTools"
+author: "Jason Reeves, Prajan Divakar, Nicole Ortogero, Maddy Griswold, Zhi Yang, Stephanie Zimmerman, Rona Vitancol and David Henderson"
+format: revealjs
+editor: visual
+---
+
+```{r}
+#| echo: false
+#| warning: false
+library(NanoStringNCTools)
+library(GeomxTools)
+library(GeoMxWorkflows)
+```
+
+## Overview of the dataset you used for analysis
+
+-   We will analyze a GeoMx kidney dataset created with the human whole transcriptome atlas (WTA) assay. The dataset includes 4 diabetic kidney disease (DKD) and 3 healthy kidney tissue samples.
+
+-   The key data files are:
+
+    -   DCCs files - expression count data and sequencing quality metadata
+
+    -   PKCs file(s) - probe assay metadata describing the gene targets present in the data
+
+    -   Annotation file - useful tissue information, including the type of segment profiled (ex: glomerulus vs. tubule), segment area/nuclei count, and other tissue characteristics (ex: diseased vs. healthy).
+
+## Methods
+
+### Overview of the analysis methods
+
+the `demoData` object is stored as a `GeoMxSet Object`. `GeoMxSet` objects are based on `ExpressionSet` objects, and have many similar functions as those described on Bioconductor. All expression, annotation, and probe information are linked and stored together as shown in the schematic below. There are a few key ways to access the data after we create a GeoMxSet Object. We use these throughout the vignette.
+
+![](GeoMxSet%20Object%20Overview.png)
+
+### QC & Pre-processing
+
+![](QCandPreprocessing.png)
+
+    -   Tools that you used (programs, packages, etc\...) - "How" did you do it?
+
+    -   Take home highlights - "Why" did you do it that way?
+
+-   Results: What interesting things did you learn from the data?
+
+-   Conclusion:
+
+    -   What interesting things / skills did you learn?
+
+    -   What challenges did you come across?
