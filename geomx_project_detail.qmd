@@ -113,7 +113,7 @@ kable(data.frame(PKCs = pkcs, modules = modules))
 
 In the section 'Loading the Demo Data', we see that the `demoData` object is stored as a `GeoMxSet Object`. `GeoMxSet` objects are based on `ExpressionSet` objects, and have many similar functions as those described on Bioconductor. All expression, annotation, and probe information are linked and stored together as shown in the schematic below. There are a few key ways to access the data after we create a GeoMxSet Object. We use these throughout the vignette.
 
-![](GeoMxSet%20Object%20Overview.png)
+![](figures/GeoMxSet_Object_Overview.png)
 
 As is shown above the GeoMxSet object consists of 3 or more elements.
 
@@ -131,7 +131,7 @@ Both eSets and GeoMxSets use `esApply` to extend the [`apply`](https://www.rdocu
 
 ## **QC & Pre-processing**
 
-![](QCandPreprocessing.png)
+![](figures/QCandPreprocessing.png)
 
 The steps above encompass the standard pre-processing workflow for GeoMx data. In short, they represent the selection of ROI/AOI segments and genes based on quality control (QC) or limit of quantification (LOQ) metrics and data normalization.
 
