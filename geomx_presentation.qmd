@@ -184,7 +184,6 @@ plt3 <- ggplot(Stat_data,
 btm_row <- plot_grid(plt2, plt3, nrow = 1, labels = c("B", ""),
                      rel_widths = c(0.43,0.57))
 plot_grid(plt1, btm_row, ncol = 1, labels = c("A", ""))
-
 ```
 
 ------------------------------------------------------------------------
@@ -202,7 +201,6 @@ boxplot(exprs(target_demoData)[,1:10],
         log = "y", names = 1:10, xlab = "Segment",
         ylab = "Counts, Raw")
 ```
-
 
 ![](figures/unnamed-chunk-34-1.png)
 
@@ -232,10 +230,9 @@ boxplot(assayDataElement(target_demoData[,1:10], elt = "neg_norm"),
 
 ![](figures/unnamed-chunk-36-1.png)
 
-
 ## Unsupervised Analysis and UMAP & t-SNE Plots
 
-```{{r}}
+``` {{r}}
 library(umap)
 library(Rtsne)
 
@@ -259,7 +256,7 @@ ggplot(pData(target_demoData),
 
 ## Unsupervised Analysis and UMAP & t-SNE Plots
 
-```{{r}}
+``` {{r}}
 # run tSNE
 set.seed(42) # set the seed for tSNE as well
 tsne_out <-
@@ -276,12 +273,9 @@ ggplot(pData(target_demoData),
 
 ![](figures/unnamed-chunk-38-1.png)
 
-
-
-
 ## Clustering High CV Genes with Heatmap
 
-```{{r}}
+``` {{r}}
 library(pheatmap)  # for pheatmap
 # create a log2 transform of the data for analysis
 assayDataElement(object = target_demoData, elt = "log_q") <-
@@ -315,10 +309,9 @@ pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),
 
 ![](figures/unnamed-chunk-39-1.png)
 
-
 ## Visualizing DE Genes with Volcano Plot
 
-```{{r}}
+``` {{r}}
 library(ggrepel) 
 # Categorize Results based on P-value & FDR for plotting
 results$Color <- "NS or FC < 0.5"
@@ -374,12 +367,9 @@ ggplot(results,
 
 ![](figures/unnamed-chunk-44-1.png)
 
-
-
-
 ## Visualizing DE Genes with MA Plot
 
-```{{r}}
+``` {{r}}
 results$MeanExp <-
     rowMeans(assayDataElement(target_demoData,
                               elt = "q_norm"))
@@ -408,22 +398,15 @@ ggplot(subset(results, !Gene %in% neg_probes),
                     min.segment.length = .1, box.padding = .2, lwd = 2) +
     theme_bw(base_size = 16) +
     facet_wrap(~Subset, nrow = 2, ncol = 1)
-
 ```
-
 
 ## Visualizing DE Genes with MA Plot
 
-
 ![](figures/unnamed-chunk-45-1.png)
-
-
 
 ## Visualizing DE Genes with Heatmap
 
-
-
-```{{r}}
+``` {{r}}
 # select top significant genes based on significance, plot with pheatmap
 GOI <- unique(subset(results, `FDR` < 0.001)$Gene)
 pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),
@@ -439,7 +422,21 @@ pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),
          annotation_col = pData(target_demoData)[, c("region", "class")])
 ```
 
-
 ## Visualizing DE Genes with Heatmap
 
 ![](figures/unnamed-chunk-47-1.png)
+
+
+## Conclusion
+## Learned Insteresting Skills 
+- How to plot UMAP & t-SNE Plots
+- How to plot volcano plot and MA plot
+- How to plot heatmap using pheat packages
+- QC & processing and normalization
+
+
+## Challeges
+- Install the Packages (Enviorment)
+- Load the Data
+- Understand the object and related functions from the packages
+- QC & preprocessing
