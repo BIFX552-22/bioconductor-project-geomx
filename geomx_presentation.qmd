@@ -25,7 +25,7 @@ editor: visual
 
     -   Annotation file - useful tissue information, including the type of segment profiled (ex: glomerulus vs. tubule), segment area/nuclei count, and other tissue characteristics (ex: diseased vs. healthy).
 
-## Overview of the Dataset
+## Overview of the Analysis Methods
 
 ![](figures/GeoMxSet_Object_Overview.png)
 
@@ -39,15 +39,15 @@ editor: visual
 library(NanoStringNCTools)
 library(GeomxTools)
 library(GeoMxWorkflows)
-library(knitr)
+library(dplyr)
 library(ggplot2)
-library(scales) # for percent
-library(reshape2)  # for melt
+library(scales)    # determining breaks for axes (i.e. for percent)
+library(reshape2)  # transform the data (i.e. for melt)
 library(cowplot)   # for plot_grid
-library(umap)
-library(Rtsne)
+library(umap)      # non linear dimensionality reduction
+library(Rtsne)     # dimensionality reduction
 library(pheatmap)  # for heatmap
-library(ggrepel)
+library(ggrepel)   # repel overlapping text labels
 ```
 
 ## Take Home Highlights
@@ -230,7 +230,7 @@ boxplot(assayDataElement(target_demoData[,1:10], elt = "neg_norm"),
 
 ![](figures/unnamed-chunk-36-1.png)
 
-## Unsupervised Analysis and UMAP & t-SNE Plots
+## Dimention Reduction
 
 ``` {{r}}
 library(umap)
@@ -250,11 +250,11 @@ ggplot(pData(target_demoData),
     theme_bw()
 ```
 
-## Unsupervised Analysis and UMAP & t-SNE Plots
+## Dimention Reduction
 
 ![](figures/unnamed-chunk-37-1.png)
 
-## Unsupervised Analysis and UMAP & t-SNE Plots
+## Dimention Reduction
 
 ``` {{r}}
 # run tSNE
@@ -269,11 +269,11 @@ ggplot(pData(target_demoData),
     theme_bw()
 ```
 
-## Unsupervised Analysis and UMAP & t-SNE Plots
+## Dimention Reduction
 
 ![](figures/unnamed-chunk-38-1.png)
 
-## Clustering High CV Genes with Heatmap
+## Clustering High CV Genes
 
 ``` {{r}}
 library(pheatmap)  # for pheatmap
@@ -305,11 +305,11 @@ pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),
              pData(target_demoData)[, c("class", "segment", "region")])
 ```
 
-## Clustering High CV Genes with Heatmap
+## Clustering High CV Genes
 
 ![](figures/unnamed-chunk-39-1.png)
 
-## Visualizing DE Genes with Volcano Plot
+## Visualizing DE Genes (Volcano)
 
 ``` {{r}}
 library(ggrepel) 
@@ -363,11 +363,11 @@ ggplot(results,
     facet_wrap(~Subset, scales = "free_y")
 ```
 
-## Visualizing DE Genes with Volcano Plot
+## Visualizing DE Genes (Volcano)
 
 ![](figures/unnamed-chunk-44-1.png)
 
-## Visualizing DE Genes with MA Plot
+## Visualizing DE Genes (MA Plot)
 
 ``` {{r}}
 results$MeanExp <-
@@ -400,11 +400,11 @@ ggplot(subset(results, !Gene %in% neg_probes),
     facet_wrap(~Subset, nrow = 2, ncol = 1)
 ```
 
-## Visualizing DE Genes with MA Plot
+## Visualizing DE Genes (MA Plot)
 
 ![](figures/unnamed-chunk-45-1.png)
 
-## Visualizing DE Genes with Heatmap
+## Visualizing DE Genes (Heatmap)
 
 ``` {{r}}
 # select top significant genes based on significance, plot with pheatmap
@@ -422,7 +422,7 @@ pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),
          annotation_col = pData(target_demoData)[, c("region", "class")])
 ```
 
-## Visualizing DE Genes with Heatmap
+## Visualizing DE Genes (Heatmap)
 
 ![](figures/unnamed-chunk-47-1.png)
 
