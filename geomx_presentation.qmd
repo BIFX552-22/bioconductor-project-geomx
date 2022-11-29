@@ -44,7 +44,7 @@ library(ggplot2)
 library(scales)    # determining breaks for axes (i.e. for percent)
 library(reshape2)  # transform the data (i.e. for melt)
 library(cowplot)   # for plot_grid
-library(umap)      # non linear dimensionality reduction
+library(umap)      # dimensionality reduction
 library(Rtsne)     # dimensionality reduction
 library(pheatmap)  # for heatmap
 library(ggrepel)   # repel overlapping text labels
