@@ -9,10 +9,18 @@ editor: visual
 
 # **Introduction**
 
-The GeoMx Digital Spatial Profiler (DSP) is a platform for capturing spatially resolved high-plex gene (or protein) expression data from tissue. In particular, formalin-fixed paraffin-embedded (FFPE) or fresh-frozen (FF) tissue sections are stained with barcoded in-situ hybridization probes that bind to endogenous mRNA transcripts. The user then selects regions of the interest (ROI) to profile; if desired, each ROI segment can be further sub-divided into areas of illumination (AOI) based on tissue morphology. The GeoMx then photo-cleaves and collects expression barcodes for each AOI segment separately for downstream sequencing and data processing.
+What is spatial profiling and why perform spatial profiling?
 
 ::: notes
-Speaker notes go here
+Bulk profiling approaches such as RNA-seq lose information about the relative composition of the tissue. Even techniques which excel at identifying rare cell populations such as single cell RNA-seq, lose information about where in the tissue those cells are located. Spatial profiling enables deep phenotpyic profiling and mapping of those profiles to specific locations within the tissue context. This is especially powerful when the processes under study are unevenly distributed in the tissue (like patchy tissue disease).
+:::
+
+# NanoString GeoMx DSP
+
+![](GEOMx-NGS_files/figure-revealjs/GeoMx-DSP-workflow-Cellecta-r1-2000x.png){width="445"}
+
+::: notes
+After hybridization of specially oligo-conjugated probes to a section, the tissue is counterstained and imaged using immunofluorescence microscopy. Regions of interest are selected. An ultraviolet laser pulse is focused precisely on the ROI to release oligos conjugated to the target protein or RNAs. The DSP intrument aspirates these oligos into collection wells. The oligos contain barcodes which map them to their source protein/RNA target, digital counting of these oligos with nCounter or next generation sequencing permits a direct readout of target abundance localized to the specific ROI with the tissue section.
 :::
 
 ## **Motivation & Scope**
@@ -27,11 +35,11 @@ Speaker notes go here
 
 The dataset includes 4 diabetic kidney disease (DKD) and 3 healthy kidney tissue samples. Regions of interest (ROI) were spatially profiled to focus on two different kidney structures: tubules or glomeruli. One glomerular ROI contains the entirety of a single glomerulus. Each tubular ROI contains multiple tubules that were segmented into distal (PanCK+) and proximal (PanCK-) tubule areas of illumination (AOI).
 
-Before we begin, we will shift any expression counts with a value of 0 to 1 to enable in downstream transformations.
-
 ::: notes
 Speaker notes go here
 :::
+
+# QC and Pre-processing
 
 ## **Segment QC**
 
@@ -40,7 +48,7 @@ Speaker notes go here
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-9-1.png){.fragment width="1950" height="550"}
 
-![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-11-1.png){.fragment width="1950" height="550"}
+![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-10-1.png){.fragment width="1950" height="550"}
 
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-12-1.png){.fragment width="1950" height="550"}
 
@@ -55,10 +63,16 @@ A probe is removed globally from the dataset if either of the following is true:
 
 -   the probe is an outlier according to the Grubb's test in at least 20% of the segments
 
-A probe is removed locally (from a given segment) if the probe is an outlier according to the Grubb's test in that segment.
+::: notes
+Before the data was summarized into gene-level count data, low-performing probes were removed. Basically this QC is an outlier removal process, whereby probes are either removed entirely from the study or from specific segments.
+:::
+
+## Limit of Quantification
+
+LOQi=geomean(NegProbei)∗geoSD(NegProbei)n
 
 ::: notes
-Speaker notes go here
+The LOQ is calculated based on the distribution of negative control probes ans is intended to approximate the quantifiable limit of gene expression per segment.
 :::
 
 ## **Segment Gene Detection**
@@ -76,7 +90,7 @@ Speaker notes go here
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-30-1.png)
 
 ::: notes
-Speaker notes go here
+Here they graphed the total number of genes detected in different percentages of segments. Using this visualization, they can better understand global gene detection in their study and select how many low detected genes to filter out of the dataset. Gene filtering increases performances of downstream statistical tests and improves interpretation of true biological signal. From this they decided to focus on the genes detected in at least 10% of the segments, they filtered out the remainder of the targets.
 :::
 
 ## **Normalization**
@@ -86,7 +100,7 @@ We will now normalize the GeoMx data for downstream visualizations and different
 ![](GEOMx-NGS_files/figure-revealjs/unnamed-chunk-32-1.png)
 
 ::: notes
-Speaker notes go here
+Here the researchers explored the relationship between the upper quartile (Q3) of the counts in each segment with the geometric mean of the negative control probes in the data.
 :::
 
 ## Effects of Normalization
