@@ -190,7 +190,9 @@ Speaker notes go here
 ![](figures/unnamed-chunk-37-1.png)
 
 ::: notes
-One common approach to understanding high-plex data is dimension reduction. Two common methods are UMAP and tSNE, which can cluster samples based on overall gene expression. Either UMAP or tSNE can cluster of segments related to tissue structure and disease status.
+-   One common approach to understanding high-plex data is dimension reduction.
+-   Two common methods are UMAP and tSNE, which can cluster samples based on overall gene expression.
+-   Either UMAP or tSNE can cluster of segments related to tissue structure and disease status.
 :::
 
 ## Dimention Reduction (UMAP)
@@ -235,7 +237,9 @@ ggplot(pData(target_demoData),
 ![](figures/unnamed-chunk-39-1.png){.absolute width="1650" height="550"}
 
 ::: notes
-Another approach to explore the data is to calculate the coefficient of variation (CV) for each gene. This unbiased approach can reveal highly variable genes across the study. We plot the results using unsupervised hierarchical clustering, displayed as a heatmap.
+-   Another approach to explore the data is to calculate the coefficient of variation (CV) for each gene.
+-   This unbiased approach can reveal highly variable genes across the study.
+-   We plot the results using unsupervised hierarchical clustering, displayed as a heatmap.
 :::
 
 ## Clustering High CV Genes
@@ -275,7 +279,9 @@ pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),
 ![](figures/unnamed-chunk-44-1.png){.absolute width="1750" height="550"}
 
 ::: notes
-A canonical visualization for interpreting differential gene expression results is the volcano plot. The volcano plot shows several genes that are significantly differentially expressed between glomeruli and tubules. Some are specific to the disease status of the sample. some genes have high fold change, but lower significance, because these genes appear to be behaving in a sample-specific manner rather than consistently across all kidney samples.
+-   A canonical visualization for interpreting differential gene expression results is the volcano plot.
+-   The volcano plot shows several genes that are significantly differentially expressed between glomeruli and tubules.
+-   Some are specific to the disease status of the sample. some genes have high fold change, but lower significance, because these genes appear to be behaving in a sample-specific manner rather than consistently across all kidney samples.
 :::
 
 ## Visualizing DE Genes (Volcano)
@@ -337,7 +343,9 @@ ggplot(results,
 ![](figures/unnamed-chunk-47-1.png){.absolute width="1650" height="550"}
 
 ::: notes
-In addition, we can again create a heatmap to visualize DE genes. we can use the P-value or FDR values to select genes. Here, we plot all genes with an FDR \< 0.001.
+-   In addition, we can again create a heatmap to visualize DE genes.
+-   we can use the P-value or FDR values to select genes.
+-   Here, we plot all genes with an FDR \< 0.001.
 :::
 
 ## Visualizing DE Genes (Heatmap)
