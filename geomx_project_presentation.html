@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="geomx_project_presentation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="geomx_project_presentation_files/libs/quarto-html/tabby.min.js"></script>
+<script src="geomx_project_presentation_files/libs/quarto-html/popper.min.js"></script>
+<script src="geomx_project_presentation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="geomx_project_presentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="geomx_project_presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="geomx_project_presentation_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.1.163">
+
+  <meta name="author" content="Jason Reeves, Prajan Divakar, Nicole Ortogero, Maddy Griswold, Zhi Yang, Stephanie Zimmerman, Rona Vitancol and David Henderson">
+  <title>Analyzing GeoMx-NGS RNA Expression Data with GeomxTools</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="geomx_project_presentation_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="geomx_project_presentation_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; background-color: #2a0f15; font-weight: bold; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="geomx_project_presentation_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="geomx_project_presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="geomx_project_presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="geomx_project_presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="geomx_project_presentation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="center">
+  <h1 class="title">Analyzing GeoMx-NGS RNA Expression Data with GeomxTools</h1>
+  <p class="author">Jason Reeves, Prajan Divakar, Nicole Ortogero, Maddy Griswold, Zhi Yang, Stephanie Zimmerman, Rona Vitancol and David Henderson</p>
+</section>
+
+<section id="overview-of-geomx-ngs-workflow" class="slide level2">
+<h2>Overview of GeoMx-NGS Workflow</h2>
+
+<img data-src="figures/GeoMx-NGS.png" class="r-stretch"><h6 id="what-is-spatial-profiling-and-why-perform-spatial-profiling">What is spatial profiling and why perform spatial profiling?</h6>
+<aside class="notes">
+<p>In this study the researchers used Nanostrings Geomx DSP to profile the transcriptomes of selected regions in the kidney. Step 1 you hybridize barcoded RNA detection probes to your sample on the slide. You can add flurescent antibodies that mark cell types of structures of interest to help guide the selection of the regions that you want to profile. THen you scan your slide and end up with a flurescent image and here you can select your ROI. Next the instrument illuminates just the regions of interest you selected with UV light which cleaves the barcode off the probes.</p>
+<p>Then it collects the barcodes into individual wells and you can seqeunce them and end up with a count for every transcript for each ROI you selected.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="overview-of-the-dataset" class="slide level2">
+<h2>Overview of the Dataset</h2>
+<ul>
+<li>We will analyze a GeoMx kidney dataset created with the human whole transcriptome atlas (WTA) assay. The dataset includes 4 diabetic kidney disease (DKD) and 3 healthy kidney tissue samples.</li>
+</ul>
+<aside class="notes">
+<p>Regions of interest (ROI) were spatially profiled to focus on two different kidney structures: tubules or glomeruli. One glomerular ROI contains the entirety of a single glomerulus. Each tubular ROI contains multiple tubules that were segmented into distal (PanCK+) and proximal (PanCK-) tubule areas of illumination (AOI).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="overview-of-the-dataset-1" class="slide level2">
+<h2>Overview of the Dataset</h2>
+<ul>
+<li><p>The key data files are:</p>
+<ul>
+<li><p>DCCs files - expression count data and sequencing quality metadata</p></li>
+<li><p>PKCs file(s) - probe assay metadata describing the gene targets present in the data</p></li>
+<li><p>Annotation file - useful tissue information, including the type of segment profiled (ex: glomerulus vs.&nbsp;tubule), segment area/nuclei count, and other tissue characteristics (ex: diseased vs.&nbsp;healthy).</p></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>The key data files they used were the expression count data, probe assay metadata and tissue information.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="overview-of-the-dataset-2" class="slide level2">
+<h2>Overview of the Dataset</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>datadir &lt;- system.file("extdata", "WTA_NGS_Example",</span>
+<span id="cb1-2"><a href="#cb1-2"></a>                       package="GeoMxWorkflows")</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>DCCFiles &lt;- dir(file.path(datadir, "dccs"), pattern = ".dcc$",</span>
+<span id="cb1-5"><a href="#cb1-5"></a>                full.names = TRUE, recursive = TRUE)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>SampleAnnotationFile &lt;-</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    dir(file.path(datadir, "annotation"), pattern = ".xlsx$",</span>
+<span id="cb1-9"><a href="#cb1-9"></a>        full.names = TRUE, recursive = TRUE)</span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a>PKCFiles &lt;- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$",</span>
+<span id="cb1-12"><a href="#cb1-12"></a>                                full.names = TRUE, recursive = TRUE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>demoData &lt;-</span>
+<span id="cb2-2"><a href="#cb2-2"></a>    readNanoStringGeoMxSet(dccFiles = DCCFiles,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>                           pkcFiles = PKCFiles,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>                           phenoDataFile = SampleAnnotationFile,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>                           phenoDataSheet = "Template",</span>
+<span id="cb2-6"><a href="#cb2-6"></a>                           phenoDataDccColName = "Sample_ID",</span>
+<span id="cb2-7"><a href="#cb2-7"></a>                           protocolDataColNames = c("aoi", "roi"),</span>
+<span id="cb2-8"><a href="#cb2-8"></a>                           experimentDataColNames = c("panel"))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside class="notes">
+<p>They list the files in each directory for use. Here they load the data to create a data object using the readNanoSTringGEOMxSet function. Then they have all the expression, annotation, and probe information linked and stored together into a single data object</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="overview-of-the-tools" class="slide level2">
+<h2>Overview of the Tools</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>library(NanoStringNCTools)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>library(GeomxTools)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>library(GeoMxWorkflows)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>library(dplyr)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>library(ggplot2)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>library(scales)    # determining breaks for axes (i.e. for percent)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>library(reshape2)  # transform the data (i.e. for melt)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>library(cowplot)   # for plot_grid</span>
+<span id="cb3-9"><a href="#cb3-9"></a>library(umap)      # dimensionality reduction</span>
+<span id="cb3-10"><a href="#cb3-10"></a>library(Rtsne)     # dimensionality reduction</span>
+<span id="cb3-11"><a href="#cb3-11"></a>library(pheatmap)  # for heatmap</span>
+<span id="cb3-12"><a href="#cb3-12"></a>library(ggrepel)   # repel overlapping text labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section>
+<section id="selected-interesting-results" class="title-slide slide level1 center">
+<h1>Selected Interesting Results</h1>
+
+</section>
+<section id="qc-pre-processing" class="slide level2">
+<h2>QC &amp; Pre-processing</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>col_by &lt;- "segment"</span>
+<span id="cb4-2"><a href="#cb4-2"></a># Graphical summaries of QC statistics plot function</span>
+<span id="cb4-3"><a href="#cb4-3"></a>QC_histogram &lt;- function(assay_data = NULL,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>                         annotation = NULL,</span>
+<span id="cb4-5"><a href="#cb4-5"></a>                         fill_by = NULL,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>                         thr = NULL,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>                         scale_trans = NULL) {</span>
+<span id="cb4-8"><a href="#cb4-8"></a>    plt &lt;- ggplot(assay_data,</span>
+<span id="cb4-9"><a href="#cb4-9"></a>                  aes_string(x = paste0("unlist(`", annotation, "`)"),</span>
+<span id="cb4-10"><a href="#cb4-10"></a>                             fill = fill_by)) +</span>
+<span id="cb4-11"><a href="#cb4-11"></a>        geom_histogram(bins = 50) +</span>
+<span id="cb4-12"><a href="#cb4-12"></a>        geom_vline(xintercept = thr, lty = "dashed", color = "black") +</span>
+<span id="cb4-13"><a href="#cb4-13"></a>        theme_bw() + guides(fill = "none") +</span>
+<span id="cb4-14"><a href="#cb4-14"></a>        facet_wrap(as.formula(paste("~", fill_by)), nrow = 4) +</span>
+<span id="cb4-15"><a href="#cb4-15"></a>        labs(x = annotation, y = "Segments, #", title = annotation)</span>
+<span id="cb4-16"><a href="#cb4-16"></a>    if(!is.null(scale_trans)) {</span>
+<span id="cb4-17"><a href="#cb4-17"></a>        plt &lt;- plt +</span>
+<span id="cb4-18"><a href="#cb4-18"></a>            scale_x_continuous(trans = scale_trans)</span>
+<span id="cb4-19"><a href="#cb4-19"></a>    }</span>
+<span id="cb4-20"><a href="#cb4-20"></a>    plt</span>
+<span id="cb4-21"><a href="#cb4-21"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside class="notes">
+<p>QC is done before gene expression analysis. ANd to do this they select their QC parameter cutoffs to assess sequencing quality and adequate tissue sampling for every ROI seqment. BEfore they excluded any low performing ROI seqments, they visualized the distributions of the data by writing a quick functions to draw histograms.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="qc-pre-processing-1" class="slide level2">
+<h2>QC &amp; Pre-processing</h2>
+<div class="r-stack">
+<p><img data-src="figures/unnamed-chunk-8-1.png" class="absolute" style="width: 1950px; height: 550px; "> <img data-src="figures/unnamed-chunk-9-1.png" class="fragment" width="1950" height="550"></p>
+<p><img data-src="figures/unnamed-chunk-10-1.png" class="fragment" width="1950" height="550"></p>
+<p><img data-src="figures/unnamed-chunk-12-1.png" class="fragment" width="1950" height="550"></p>
+<p><img data-src="figures/unnamed-chunk-13-1.png" class="fragment" width="1950" height="550"></p>
+</div>
+<aside class="notes">
+<p>Before moving on they removed flagged seqments that didnt meet the QC cutoffs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="qc-pre-processing-2" class="slide level2">
+<h2>QC &amp; Pre-processing</h2>
+<p><img data-src="figures/unnamed-chunk-30-1.png" class="absolute" style="width: 1650px; height: 550px; "></p>
+<aside class="notes">
+<p>After filtering out outlier probes and segments with abnormally low signal, they determine the number of genes detected in each segment.</p>
+<p>This graph shows the total number of genes detected in different percentages of segments. Using this visualization, they can select how many low detected genes to filter out of the dataset. From this they decided to focus on the genes detected in at least 10% of the segments, they filtered out the remainder of the targets.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="normalization" class="slide level2">
+<h2>Normalization</h2>
+<p>Normalize the GeoMx data for downstream visualizations and differential expression.</p>
+<p><img data-src="figures/unnamed-chunk-32-1.png" class="fragment" width="1150" height="450"></p>
+<aside class="notes">
+<p>Before they moved on to normalization, they wanted to explore the relationship between the upper quartile of the counts in each segment with the geometric mean of the negative control probes. Here you can see separation between these two values to ensure you have stable measure of Q3 signal.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="effects-of-normalization" class="slide level2">
+<h2>Effects of Normalization</h2>
+<p>We will use Q3 normalized data moving forward. We use the&nbsp;<code>normalize</code>&nbsp;function from&nbsp;<code>NanoStringNCTools</code>&nbsp;to create normalization factors reflecting each data type.&nbsp;</p>
+<div class="r-stack">
+<p><img data-src="figures/unnamed-chunk-34-1.png" class="fragment" width="1150" height="450"></p>
+<p><img data-src="figures/unnamed-chunk-35-1.png" class="fragment" width="1150" height="450"></p>
+<p><img data-src="figures/unnamed-chunk-36-1.png" class="fragment" width="1150" height="450"></p>
+</div>
+<aside class="notes">
+<p>To demonstrate the effects of normalization, they graph representative box plots of the data for individual seqments before and after normalization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dimention-reduction-umap" class="slide level2">
+<h2>Dimention Reduction (UMAP)</h2>
+
+<img data-src="figures/unnamed-chunk-37-1.png" class="r-stretch"><aside class="notes">
+<ul>
+<li>One common approach to understanding high-plex data is dimension reduction.</li>
+<li>Two common methods are UMAP and tSNE, which can cluster samples based on overall gene expression.</li>
+<li>Either UMAP or tSNE can cluster of segments related to tissue structure and disease status.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dimention-reduction-umap-1" class="slide level2">
+<h2>Dimention Reduction (UMAP)</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>library(umap)</span>
+<span id="cb5-2"><a href="#cb5-2"></a># update defaults for umap to contain a stable random_state (seed)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>custom_umap &lt;- umap::umap.defaults</span>
+<span id="cb5-4"><a href="#cb5-4"></a>custom_umap$random_state &lt;- 42</span>
+<span id="cb5-5"><a href="#cb5-5"></a># run UMAP</span>
+<span id="cb5-6"><a href="#cb5-6"></a>umap_out &lt;-</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    umap(t(log2(assayDataElement(target_demoData , elt = "q_norm"))),  </span>
+<span id="cb5-8"><a href="#cb5-8"></a>         config = custom_umap)</span>
+<span id="cb5-9"><a href="#cb5-9"></a>pData(target_demoData)[, c("UMAP1", "UMAP2")] &lt;- umap_out$layout[, c(1,2)]</span>
+<span id="cb5-10"><a href="#cb5-10"></a>ggplot(pData(target_demoData),</span>
+<span id="cb5-11"><a href="#cb5-11"></a>       aes(x = UMAP1, y = UMAP2, color = region, shape = class)) +</span>
+<span id="cb5-12"><a href="#cb5-12"></a>    geom_point(size = 3) +</span>
+<span id="cb5-13"><a href="#cb5-13"></a>    theme_bw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="dimention-reduction-t-sne" class="slide level2">
+<h2>Dimention Reduction (t-SNE)</h2>
+
+<img data-src="figures/unnamed-chunk-38-1.png" class="r-stretch"></section>
+<section id="dimention-reduction-t-sne-1" class="slide level2">
+<h2>Dimention Reduction (t-SNE)</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>library(Rtsne)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>set.seed(42) # set the seed for tSNE as well</span>
+<span id="cb6-3"><a href="#cb6-3"></a>tsne_out &lt;-</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    Rtsne(t(log2(assayDataElement(target_demoData , elt = "q_norm"))),</span>
+<span id="cb6-5"><a href="#cb6-5"></a>          perplexity = ncol(target_demoData)*.15)</span>
+<span id="cb6-6"><a href="#cb6-6"></a>pData(target_demoData)[, c("tSNE1", "tSNE2")] &lt;- tsne_out$Y[, c(1,2)]</span>
+<span id="cb6-7"><a href="#cb6-7"></a>ggplot(pData(target_demoData),</span>
+<span id="cb6-8"><a href="#cb6-8"></a>       aes(x = tSNE1, y = tSNE2, color = region, shape = class)) +</span>
+<span id="cb6-9"><a href="#cb6-9"></a>    geom_point(size = 3) +</span>
+<span id="cb6-10"><a href="#cb6-10"></a>    theme_bw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="clustering-high-cv-genes" class="slide level2">
+<h2>Clustering High CV Genes</h2>
+<p><img data-src="figures/unnamed-chunk-39-1.png" class="absolute" style="width: 1650px; height: 550px; "></p>
+<aside class="notes">
+<ul>
+<li>Another approach to explore the data is to calculate the coefficient of variation (CV) for each gene.</li>
+<li>This unbiased approach can reveal highly variable genes across the study.</li>
+<li>We plot the results using unsupervised hierarchical clustering, displayed as a heatmap.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="clustering-high-cv-genes-1" class="slide level2">
+<h2>Clustering High CV Genes</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a>library(pheatmap)  # for pheatmap</span>
+<span id="cb7-2"><a href="#cb7-2"></a># create a log2 transform of the data for analysis</span>
+<span id="cb7-3"><a href="#cb7-3"></a>assayDataElement(object = target_demoData, elt = "log_q") &lt;-</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    assayDataApply(target_demoData, 2, FUN = log, base = 2, elt = "q_norm")</span>
+<span id="cb7-5"><a href="#cb7-5"></a></span>
+<span id="cb7-6"><a href="#cb7-6"></a># create CV function</span>
+<span id="cb7-7"><a href="#cb7-7"></a>calc_CV &lt;- function(x) {sd(x) / mean(x)}</span>
+<span id="cb7-8"><a href="#cb7-8"></a>CV_dat &lt;- assayDataApply(target_demoData,</span>
+<span id="cb7-9"><a href="#cb7-9"></a>                         elt = "log_q", MARGIN = 1, calc_CV)</span>
+<span id="cb7-10"><a href="#cb7-10"></a># show the highest CD genes and their CV values</span>
+<span id="cb7-11"><a href="#cb7-11"></a>sort(CV_dat, decreasing = TRUE)[1:5]</span>
+<span id="cb7-12"><a href="#cb7-12"></a>#&gt;   CAMK2N1    AKR1C1      AQP2     GDF15       REN </span>
+<span id="cb7-13"><a href="#cb7-13"></a>#&gt; 0.5886006 0.5114973 0.4607206 0.4196469 0.4193216</span>
+<span id="cb7-14"><a href="#cb7-14"></a></span>
+<span id="cb7-15"><a href="#cb7-15"></a># Identify genes in the top 3rd of the CV values</span>
+<span id="cb7-16"><a href="#cb7-16"></a>GOI &lt;- names(CV_dat)[CV_dat &gt; quantile(CV_dat, 0.8)]</span>
+<span id="cb7-17"><a href="#cb7-17"></a>pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),</span>
+<span id="cb7-18"><a href="#cb7-18"></a>         scale = "row", </span>
+<span id="cb7-19"><a href="#cb7-19"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
+<span id="cb7-20"><a href="#cb7-20"></a>         border_color = NA,</span>
+<span id="cb7-21"><a href="#cb7-21"></a>         clustering_method = "average",</span>
+<span id="cb7-22"><a href="#cb7-22"></a>         clustering_distance_rows = "correlation",</span>
+<span id="cb7-23"><a href="#cb7-23"></a>         clustering_distance_cols = "correlation",</span>
+<span id="cb7-24"><a href="#cb7-24"></a>         breaks = seq(-3, 3, 0.05),</span>
+<span id="cb7-25"><a href="#cb7-25"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
+<span id="cb7-26"><a href="#cb7-26"></a>         annotation_col = </span>
+<span id="cb7-27"><a href="#cb7-27"></a>             pData(target_demoData)[, c("class", "segment", "region")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="visualizing-de-genes-volcano" class="slide level2">
+<h2>Visualizing DE Genes (Volcano)</h2>
+<p><img data-src="figures/unnamed-chunk-44-1.png" class="absolute" style="width: 1750px; height: 550px; "></p>
+<aside class="notes">
+<ul>
+<li>A canonical visualization for interpreting differential gene expression results is the volcano plot.</li>
+<li>The volcano plot shows several genes that are significantly differentially expressed between glomeruli and tubules.</li>
+<li>Some are specific to the disease status of the sample. some genes have high fold change, but lower significance, because these genes appear to be behaving in a sample-specific manner rather than consistently across all kidney samples.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="visualizing-de-genes-volcano-1" class="slide level2">
+<h2>Visualizing DE Genes (Volcano)</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>library(ggrepel) # repel the text</span>
+<span id="cb8-2"><a href="#cb8-2"></a># Categorize Results based on P-value &amp; FDR for plotting</span>
+<span id="cb8-3"><a href="#cb8-3"></a>results$Color &lt;- "NS or FC &lt; 0.5"</span>
+<span id="cb8-4"><a href="#cb8-4"></a>results$Color[results$`Pr(&gt;|t|)` &lt; 0.05] &lt;- "P &lt; 0.05"</span>
+<span id="cb8-5"><a href="#cb8-5"></a>results$Color[results$FDR &lt; 0.05] &lt;- "FDR &lt; 0.05"</span>
+<span id="cb8-6"><a href="#cb8-6"></a>results$Color[results$FDR &lt; 0.001] &lt;- "FDR &lt; 0.001"</span>
+<span id="cb8-7"><a href="#cb8-7"></a>results$Color[abs(results$Estimate) &lt; 0.5] &lt;- "NS or FC &lt; 0.5"</span>
+<span id="cb8-8"><a href="#cb8-8"></a>results$Color &lt;- factor(results$Color,</span>
+<span id="cb8-9"><a href="#cb8-9"></a>                        levels = c("NS or FC &lt; 0.5", "P &lt; 0.05",</span>
+<span id="cb8-10"><a href="#cb8-10"></a>                                   "FDR &lt; 0.05", "FDR &lt; 0.001"))</span>
+<span id="cb8-11"><a href="#cb8-11"></a></span>
+<span id="cb8-12"><a href="#cb8-12"></a># pick top genes for either side of volcano to label</span>
+<span id="cb8-13"><a href="#cb8-13"></a># order genes for convenience:</span>
+<span id="cb8-14"><a href="#cb8-14"></a>results$invert_P &lt;- (-log10(results$`Pr(&gt;|t|)`)) * sign(results$Estimate)</span>
+<span id="cb8-15"><a href="#cb8-15"></a>top_g &lt;- c()</span>
+<span id="cb8-16"><a href="#cb8-16"></a>for(cond in c("DKD", "normal")) {</span>
+<span id="cb8-17"><a href="#cb8-17"></a>    ind &lt;- results$Subset == cond</span>
+<span id="cb8-18"><a href="#cb8-18"></a>    top_g &lt;- c(top_g,</span>
+<span id="cb8-19"><a href="#cb8-19"></a>               results[ind, 'Gene'][</span>
+<span id="cb8-20"><a href="#cb8-20"></a>                   order(results[ind, 'invert_P'], decreasing = TRUE)[1:15]],</span>
+<span id="cb8-21"><a href="#cb8-21"></a>               results[ind, 'Gene'][</span>
+<span id="cb8-22"><a href="#cb8-22"></a>                   order(results[ind, 'invert_P'], decreasing = FALSE)[1:15]])</span>
+<span id="cb8-23"><a href="#cb8-23"></a>}</span>
+<span id="cb8-24"><a href="#cb8-24"></a>top_g &lt;- unique(top_g)</span>
+<span id="cb8-25"><a href="#cb8-25"></a>results &lt;- results[, -1*ncol(results)] # remove invert_P from matrix</span>
+<span id="cb8-26"><a href="#cb8-26"></a></span>
+<span id="cb8-27"><a href="#cb8-27"></a># Graph results</span>
+<span id="cb8-28"><a href="#cb8-28"></a>ggplot(results,</span>
+<span id="cb8-29"><a href="#cb8-29"></a>       aes(x = Estimate, y = -log10(`Pr(&gt;|t|)`),</span>
+<span id="cb8-30"><a href="#cb8-30"></a>           color = Color, label = Gene)) +</span>
+<span id="cb8-31"><a href="#cb8-31"></a>    geom_vline(xintercept = c(0.5, -0.5), lty = "dashed") +</span>
+<span id="cb8-32"><a href="#cb8-32"></a>    geom_hline(yintercept = -log10(0.05), lty = "dashed") +</span>
+<span id="cb8-33"><a href="#cb8-33"></a>    geom_point() +</span>
+<span id="cb8-34"><a href="#cb8-34"></a>    labs(x = "Enriched in Tubules &lt;- log2(FC) -&gt; Enriched in Glomeruli",</span>
+<span id="cb8-35"><a href="#cb8-35"></a>         y = "Significance, -log10(P)",</span>
+<span id="cb8-36"><a href="#cb8-36"></a>         color = "Significance") +</span>
+<span id="cb8-37"><a href="#cb8-37"></a>    scale_color_manual(values = c(`FDR &lt; 0.001` = "dodgerblue",</span>
+<span id="cb8-38"><a href="#cb8-38"></a>                                  `FDR &lt; 0.05` = "lightblue",</span>
+<span id="cb8-39"><a href="#cb8-39"></a>                                  `P &lt; 0.05` = "orange2",</span>
+<span id="cb8-40"><a href="#cb8-40"></a>                                  `NS or FC &lt; 0.5` = "gray"),</span>
+<span id="cb8-41"><a href="#cb8-41"></a>                       guide = guide_legend(override.aes = list(size = 4))) +</span>
+<span id="cb8-42"><a href="#cb8-42"></a>    scale_y_continuous(expand = expansion(mult = c(0,0.05))) +</span>
+<span id="cb8-43"><a href="#cb8-43"></a>    geom_text_repel(data = subset(results, Gene %in% top_g &amp; FDR &lt; 0.001),</span>
+<span id="cb8-44"><a href="#cb8-44"></a>                    size = 4, point.padding = 0.15, color = "black",</span>
+<span id="cb8-45"><a href="#cb8-45"></a>                    min.segment.length = .1, box.padding = .2, lwd = 2,</span>
+<span id="cb8-46"><a href="#cb8-46"></a>                    max.overlaps = 50) +</span>
+<span id="cb8-47"><a href="#cb8-47"></a>    theme_bw(base_size = 16) +</span>
+<span id="cb8-48"><a href="#cb8-48"></a>    theme(legend.position = "bottom") +</span>
+<span id="cb8-49"><a href="#cb8-49"></a>    facet_wrap(~Subset, scales = "free_y")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="visualizing-de-genes-heatmap" class="slide level2">
+<h2>Visualizing DE Genes (Heatmap)</h2>
+<p><img data-src="figures/unnamed-chunk-47-1.png" class="absolute" style="width: 1650px; height: 550px; "></p>
+<aside class="notes">
+<ul>
+<li>In addition, we can again create a heatmap to visualize DE genes.</li>
+<li>we can use the P-value or FDR values to select genes.</li>
+<li>Here, we plot all genes with an FDR &lt; 0.001.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="visualizing-de-genes-heatmap-1" class="slide level2">
+<h2>Visualizing DE Genes (Heatmap)</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href="#cb9-1"></a># select top significant genes based on significance, plot with pheatmap</span>
+<span id="cb9-2"><a href="#cb9-2"></a>GOI &lt;- unique(subset(results, `FDR` &lt; 0.001)$Gene)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),</span>
+<span id="cb9-4"><a href="#cb9-4"></a>         scale = "row", </span>
+<span id="cb9-5"><a href="#cb9-5"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
+<span id="cb9-6"><a href="#cb9-6"></a>         border_color = NA,</span>
+<span id="cb9-7"><a href="#cb9-7"></a>         clustering_method = "average",</span>
+<span id="cb9-8"><a href="#cb9-8"></a>         clustering_distance_rows = "correlation",</span>
+<span id="cb9-9"><a href="#cb9-9"></a>         clustering_distance_cols = "correlation",</span>
+<span id="cb9-10"><a href="#cb9-10"></a>         cutree_cols = 2, cutree_rows = 2,</span>
+<span id="cb9-11"><a href="#cb9-11"></a>         breaks = seq(-3, 3, 0.05),</span>
+<span id="cb9-12"><a href="#cb9-12"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
+<span id="cb9-13"><a href="#cb9-13"></a>         annotation_col = pData(target_demoData)[, c("region", "class")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="take-home-highlights" class="slide level2">
+<h2>Take Home Highlights</h2>
+<ul>
+<li>QC &amp; Pre-processing and Normalization</li>
+<li>Unsupervised Analysis
+<ul>
+<li>UMAP &amp; t-SNE plots</li>
+<li>Clustering high coefficient of variation (CV) genes (heatmap)</li>
+</ul></li>
+<li>Visualizing Differential Expression
+<ul>
+<li>Volcano Plot</li>
+<li>heatmap</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1 center">
+<h1>Conclusion</h1>
+
+</section>
+<section id="learned-interesting-skills" class="slide level2">
+<h2>Learned Interesting Skills</h2>
+<ul>
+<li>How to plot UMAP &amp; t-SNE Plots</li>
+<li>How to plot volcano plot</li>
+<li>How to plot heatmap using pheat packages</li>
+<li>QC &amp; processing and normalization</li>
+</ul>
+</section>
+<section id="challeges" class="slide level2">
+<h2>Challeges</h2>
+<ul>
+<li>Install the Packages (Enviorment)</li>
+<li>Load the Data</li>
+<li>Understand the object and related functions from the packages</li>
+<li>QC &amp; preprocessing</li>
+</ul>
+<div class="footer footer-default">
+
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="geomx_project_presentation_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="geomx_project_presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="geomx_project_presentation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="geomx_project_presentation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="geomx_project_presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="geomx_project_presentation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="geomx_project_presentation_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="geomx_project_presentation_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="geomx_project_presentation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="geomx_project_presentation_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        setTimeout(function() {
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    });
+    </script>
+    
+
+</body></html>

@@ -1,1 +1,6 @@
+# Ignore Mac system files
 .DS_Store
+
+# Ignore R history files
+.RData
+.Rhistory
