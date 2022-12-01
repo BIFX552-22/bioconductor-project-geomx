@@ -455,6 +455,42 @@
           display:block!important;
       }</style></aside>
 </section>
+<section id="overview-of-the-dataset-2" class="slide level2">
+<h2>Overview of the Dataset</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>datadir &lt;- system.file("extdata", "WTA_NGS_Example",</span>
+<span id="cb1-2"><a href="#cb1-2"></a>                       package="GeoMxWorkflows")</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>DCCFiles &lt;- dir(file.path(datadir, "dccs"), pattern = ".dcc$",</span>
+<span id="cb1-5"><a href="#cb1-5"></a>                full.names = TRUE, recursive = TRUE)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>SampleAnnotationFile &lt;-</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    dir(file.path(datadir, "annotation"), pattern = ".xlsx$",</span>
+<span id="cb1-9"><a href="#cb1-9"></a>        full.names = TRUE, recursive = TRUE)</span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a>PKCFiles &lt;- unzip(zipfile = dir(file.path(datadir, "pkcs"), pattern = ".zip$",</span>
+<span id="cb1-12"><a href="#cb1-12"></a>                                full.names = TRUE, recursive = TRUE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>demoData &lt;-</span>
+<span id="cb2-2"><a href="#cb2-2"></a>    readNanoStringGeoMxSet(dccFiles = DCCFiles,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>                           pkcFiles = PKCFiles,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>                           phenoDataFile = SampleAnnotationFile,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>                           phenoDataSheet = "Template",</span>
+<span id="cb2-6"><a href="#cb2-6"></a>                           phenoDataDccColName = "Sample_ID",</span>
+<span id="cb2-7"><a href="#cb2-7"></a>                           protocolDataColNames = c("aoi", "roi"),</span>
+<span id="cb2-8"><a href="#cb2-8"></a>                           experimentDataColNames = c("panel"))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside class="notes">
+<p>They list the files in each directory for use. THen they load the data to create a data object using the readNanoSTringGEOMxSet function. Then they have all the expression, annotation, and probe information linked and stored together into a single data object</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="overview-of-the-analysis-methods" class="slide level2">
 <h2>Overview of the Analysis Methods</h2>
 
@@ -474,18 +510,18 @@
 </section>
 <section id="overview-of-the-tools" class="slide level2">
 <h2>Overview of the Tools</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>library(NanoStringNCTools)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>library(GeomxTools)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>library(GeoMxWorkflows)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>library(dplyr)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>library(ggplot2)</span>
-<span id="cb1-6"><a href="#cb1-6"></a>library(scales)    # determining breaks for axes (i.e. for percent)</span>
-<span id="cb1-7"><a href="#cb1-7"></a>library(reshape2)  # transform the data (i.e. for melt)</span>
-<span id="cb1-8"><a href="#cb1-8"></a>library(cowplot)   # for plot_grid</span>
-<span id="cb1-9"><a href="#cb1-9"></a>library(umap)      # dimensionality reduction</span>
-<span id="cb1-10"><a href="#cb1-10"></a>library(Rtsne)     # dimensionality reduction</span>
-<span id="cb1-11"><a href="#cb1-11"></a>library(pheatmap)  # for heatmap</span>
-<span id="cb1-12"><a href="#cb1-12"></a>library(ggrepel)   # repel overlapping text labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>library(NanoStringNCTools)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>library(GeomxTools)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>library(GeoMxWorkflows)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>library(dplyr)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>library(ggplot2)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>library(scales)    # determining breaks for axes (i.e. for percent)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>library(reshape2)  # transform the data (i.e. for melt)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>library(cowplot)   # for plot_grid</span>
+<span id="cb3-9"><a href="#cb3-9"></a>library(umap)      # dimensionality reduction</span>
+<span id="cb3-10"><a href="#cb3-10"></a>library(Rtsne)     # dimensionality reduction</span>
+<span id="cb3-11"><a href="#cb3-11"></a>library(pheatmap)  # for heatmap</span>
+<span id="cb3-12"><a href="#cb3-12"></a>library(ggrepel)   # repel overlapping text labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section>
 <section id="selected-interesting-results" class="title-slide slide level1 center">
@@ -494,28 +530,28 @@
 </section>
 <section id="qc-pre-processing" class="slide level2">
 <h2>QC &amp; Pre-processing</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a></span>
-<span id="cb2-2"><a href="#cb2-2"></a>col_by &lt;- "segment"</span>
-<span id="cb2-3"><a href="#cb2-3"></a># Graphical summaries of QC statistics plot function</span>
-<span id="cb2-4"><a href="#cb2-4"></a>QC_histogram &lt;- function(assay_data = NULL,</span>
-<span id="cb2-5"><a href="#cb2-5"></a>                         annotation = NULL,</span>
-<span id="cb2-6"><a href="#cb2-6"></a>                         fill_by = NULL,</span>
-<span id="cb2-7"><a href="#cb2-7"></a>                         thr = NULL,</span>
-<span id="cb2-8"><a href="#cb2-8"></a>                         scale_trans = NULL) {</span>
-<span id="cb2-9"><a href="#cb2-9"></a>    plt &lt;- ggplot(assay_data,</span>
-<span id="cb2-10"><a href="#cb2-10"></a>                  aes_string(x = paste0("unlist(`", annotation, "`)"),</span>
-<span id="cb2-11"><a href="#cb2-11"></a>                             fill = fill_by)) +</span>
-<span id="cb2-12"><a href="#cb2-12"></a>        geom_histogram(bins = 50) +</span>
-<span id="cb2-13"><a href="#cb2-13"></a>        geom_vline(xintercept = thr, lty = "dashed", color = "black") +</span>
-<span id="cb2-14"><a href="#cb2-14"></a>        theme_bw() + guides(fill = "none") +</span>
-<span id="cb2-15"><a href="#cb2-15"></a>        facet_wrap(as.formula(paste("~", fill_by)), nrow = 4) +</span>
-<span id="cb2-16"><a href="#cb2-16"></a>        labs(x = annotation, y = "Segments, #", title = annotation)</span>
-<span id="cb2-17"><a href="#cb2-17"></a>    if(!is.null(scale_trans)) {</span>
-<span id="cb2-18"><a href="#cb2-18"></a>        plt &lt;- plt +</span>
-<span id="cb2-19"><a href="#cb2-19"></a>            scale_x_continuous(trans = scale_trans)</span>
-<span id="cb2-20"><a href="#cb2-20"></a>    }</span>
-<span id="cb2-21"><a href="#cb2-21"></a>    plt</span>
-<span id="cb2-22"><a href="#cb2-22"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2"></a>col_by &lt;- "segment"</span>
+<span id="cb4-3"><a href="#cb4-3"></a># Graphical summaries of QC statistics plot function</span>
+<span id="cb4-4"><a href="#cb4-4"></a>QC_histogram &lt;- function(assay_data = NULL,</span>
+<span id="cb4-5"><a href="#cb4-5"></a>                         annotation = NULL,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>                         fill_by = NULL,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>                         thr = NULL,</span>
+<span id="cb4-8"><a href="#cb4-8"></a>                         scale_trans = NULL) {</span>
+<span id="cb4-9"><a href="#cb4-9"></a>    plt &lt;- ggplot(assay_data,</span>
+<span id="cb4-10"><a href="#cb4-10"></a>                  aes_string(x = paste0("unlist(`", annotation, "`)"),</span>
+<span id="cb4-11"><a href="#cb4-11"></a>                             fill = fill_by)) +</span>
+<span id="cb4-12"><a href="#cb4-12"></a>        geom_histogram(bins = 50) +</span>
+<span id="cb4-13"><a href="#cb4-13"></a>        geom_vline(xintercept = thr, lty = "dashed", color = "black") +</span>
+<span id="cb4-14"><a href="#cb4-14"></a>        theme_bw() + guides(fill = "none") +</span>
+<span id="cb4-15"><a href="#cb4-15"></a>        facet_wrap(as.formula(paste("~", fill_by)), nrow = 4) +</span>
+<span id="cb4-16"><a href="#cb4-16"></a>        labs(x = annotation, y = "Segments, #", title = annotation)</span>
+<span id="cb4-17"><a href="#cb4-17"></a>    if(!is.null(scale_trans)) {</span>
+<span id="cb4-18"><a href="#cb4-18"></a>        plt &lt;- plt +</span>
+<span id="cb4-19"><a href="#cb4-19"></a>            scale_x_continuous(trans = scale_trans)</span>
+<span id="cb4-20"><a href="#cb4-20"></a>    }</span>
+<span id="cb4-21"><a href="#cb4-21"></a>    plt</span>
+<span id="cb4-22"><a href="#cb4-22"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <aside class="notes">
 <p>Speaker notes go here</p>
 <style type="text/css">
@@ -645,34 +681,34 @@
 </section>
 <section id="clustering-high-cv-genes" class="slide level2">
 <h2>Clustering High CV Genes</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a></span>
-<span id="cb3-2"><a href="#cb3-2"></a>library(pheatmap)  # for pheatmap</span>
-<span id="cb3-3"><a href="#cb3-3"></a># create a log2 transform of the data for analysis</span>
-<span id="cb3-4"><a href="#cb3-4"></a>assayDataElement(object = target_demoData, elt = "log_q") &lt;-</span>
-<span id="cb3-5"><a href="#cb3-5"></a>    assayDataApply(target_demoData, 2, FUN = log, base = 2, elt = "q_norm")</span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a># create CV function</span>
-<span id="cb3-8"><a href="#cb3-8"></a>calc_CV &lt;- function(x) {sd(x) / mean(x)}</span>
-<span id="cb3-9"><a href="#cb3-9"></a>CV_dat &lt;- assayDataApply(target_demoData,</span>
-<span id="cb3-10"><a href="#cb3-10"></a>                         elt = "log_q", MARGIN = 1, calc_CV)</span>
-<span id="cb3-11"><a href="#cb3-11"></a># show the highest CD genes and their CV values</span>
-<span id="cb3-12"><a href="#cb3-12"></a>sort(CV_dat, decreasing = TRUE)[1:5]</span>
-<span id="cb3-13"><a href="#cb3-13"></a>#&gt;   CAMK2N1    AKR1C1      AQP2     GDF15       REN </span>
-<span id="cb3-14"><a href="#cb3-14"></a>#&gt; 0.5886006 0.5114973 0.4607206 0.4196469 0.4193216</span>
-<span id="cb3-15"><a href="#cb3-15"></a></span>
-<span id="cb3-16"><a href="#cb3-16"></a># Identify genes in the top 3rd of the CV values</span>
-<span id="cb3-17"><a href="#cb3-17"></a>GOI &lt;- names(CV_dat)[CV_dat &gt; quantile(CV_dat, 0.8)]</span>
-<span id="cb3-18"><a href="#cb3-18"></a>pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),</span>
-<span id="cb3-19"><a href="#cb3-19"></a>         scale = "row", </span>
-<span id="cb3-20"><a href="#cb3-20"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
-<span id="cb3-21"><a href="#cb3-21"></a>         border_color = NA,</span>
-<span id="cb3-22"><a href="#cb3-22"></a>         clustering_method = "average",</span>
-<span id="cb3-23"><a href="#cb3-23"></a>         clustering_distance_rows = "correlation",</span>
-<span id="cb3-24"><a href="#cb3-24"></a>         clustering_distance_cols = "correlation",</span>
-<span id="cb3-25"><a href="#cb3-25"></a>         breaks = seq(-3, 3, 0.05),</span>
-<span id="cb3-26"><a href="#cb3-26"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
-<span id="cb3-27"><a href="#cb3-27"></a>         annotation_col = </span>
-<span id="cb3-28"><a href="#cb3-28"></a>             pData(target_demoData)[, c("class", "segment", "region")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2"></a>library(pheatmap)  # for pheatmap</span>
+<span id="cb5-3"><a href="#cb5-3"></a># create a log2 transform of the data for analysis</span>
+<span id="cb5-4"><a href="#cb5-4"></a>assayDataElement(object = target_demoData, elt = "log_q") &lt;-</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    assayDataApply(target_demoData, 2, FUN = log, base = 2, elt = "q_norm")</span>
+<span id="cb5-6"><a href="#cb5-6"></a></span>
+<span id="cb5-7"><a href="#cb5-7"></a># create CV function</span>
+<span id="cb5-8"><a href="#cb5-8"></a>calc_CV &lt;- function(x) {sd(x) / mean(x)}</span>
+<span id="cb5-9"><a href="#cb5-9"></a>CV_dat &lt;- assayDataApply(target_demoData,</span>
+<span id="cb5-10"><a href="#cb5-10"></a>                         elt = "log_q", MARGIN = 1, calc_CV)</span>
+<span id="cb5-11"><a href="#cb5-11"></a># show the highest CD genes and their CV values</span>
+<span id="cb5-12"><a href="#cb5-12"></a>sort(CV_dat, decreasing = TRUE)[1:5]</span>
+<span id="cb5-13"><a href="#cb5-13"></a>#&gt;   CAMK2N1    AKR1C1      AQP2     GDF15       REN </span>
+<span id="cb5-14"><a href="#cb5-14"></a>#&gt; 0.5886006 0.5114973 0.4607206 0.4196469 0.4193216</span>
+<span id="cb5-15"><a href="#cb5-15"></a></span>
+<span id="cb5-16"><a href="#cb5-16"></a># Identify genes in the top 3rd of the CV values</span>
+<span id="cb5-17"><a href="#cb5-17"></a>GOI &lt;- names(CV_dat)[CV_dat &gt; quantile(CV_dat, 0.8)]</span>
+<span id="cb5-18"><a href="#cb5-18"></a>pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),</span>
+<span id="cb5-19"><a href="#cb5-19"></a>         scale = "row", </span>
+<span id="cb5-20"><a href="#cb5-20"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
+<span id="cb5-21"><a href="#cb5-21"></a>         border_color = NA,</span>
+<span id="cb5-22"><a href="#cb5-22"></a>         clustering_method = "average",</span>
+<span id="cb5-23"><a href="#cb5-23"></a>         clustering_distance_rows = "correlation",</span>
+<span id="cb5-24"><a href="#cb5-24"></a>         clustering_distance_cols = "correlation",</span>
+<span id="cb5-25"><a href="#cb5-25"></a>         breaks = seq(-3, 3, 0.05),</span>
+<span id="cb5-26"><a href="#cb5-26"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
+<span id="cb5-27"><a href="#cb5-27"></a>         annotation_col = </span>
+<span id="cb5-28"><a href="#cb5-28"></a>             pData(target_demoData)[, c("class", "segment", "region")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <aside class="notes">
 <p>Speaker notes go here</p>
 <style type="text/css">
@@ -740,19 +776,19 @@
 </section>
 <section id="visualizing-de-genes-heatmap" class="slide level2">
 <h2>Visualizing DE Genes (Heatmap)</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a># select top significant genes based on significance, plot with pheatmap</span>
-<span id="cb4-2"><a href="#cb4-2"></a>GOI &lt;- unique(subset(results, `FDR` &lt; 0.001)$Gene)</span>
-<span id="cb4-3"><a href="#cb4-3"></a>pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),</span>
-<span id="cb4-4"><a href="#cb4-4"></a>         scale = "row", </span>
-<span id="cb4-5"><a href="#cb4-5"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
-<span id="cb4-6"><a href="#cb4-6"></a>         border_color = NA,</span>
-<span id="cb4-7"><a href="#cb4-7"></a>         clustering_method = "average",</span>
-<span id="cb4-8"><a href="#cb4-8"></a>         clustering_distance_rows = "correlation",</span>
-<span id="cb4-9"><a href="#cb4-9"></a>         clustering_distance_cols = "correlation",</span>
-<span id="cb4-10"><a href="#cb4-10"></a>         cutree_cols = 2, cutree_rows = 2,</span>
-<span id="cb4-11"><a href="#cb4-11"></a>         breaks = seq(-3, 3, 0.05),</span>
-<span id="cb4-12"><a href="#cb4-12"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
-<span id="cb4-13"><a href="#cb4-13"></a>         annotation_col = pData(target_demoData)[, c("region", "class")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a># select top significant genes based on significance, plot with pheatmap</span>
+<span id="cb6-2"><a href="#cb6-2"></a>GOI &lt;- unique(subset(results, `FDR` &lt; 0.001)$Gene)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),</span>
+<span id="cb6-4"><a href="#cb6-4"></a>         scale = "row", </span>
+<span id="cb6-5"><a href="#cb6-5"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>         border_color = NA,</span>
+<span id="cb6-7"><a href="#cb6-7"></a>         clustering_method = "average",</span>
+<span id="cb6-8"><a href="#cb6-8"></a>         clustering_distance_rows = "correlation",</span>
+<span id="cb6-9"><a href="#cb6-9"></a>         clustering_distance_cols = "correlation",</span>
+<span id="cb6-10"><a href="#cb6-10"></a>         cutree_cols = 2, cutree_rows = 2,</span>
+<span id="cb6-11"><a href="#cb6-11"></a>         breaks = seq(-3, 3, 0.05),</span>
+<span id="cb6-12"><a href="#cb6-12"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
+<span id="cb6-13"><a href="#cb6-13"></a>         annotation_col = pData(target_demoData)[, c("region", "class")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <aside class="notes">
 <p>Speaker notes go here</p>
 <style type="text/css">
