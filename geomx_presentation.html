@@ -457,12 +457,9 @@
 </section>
 <section id="overview-of-the-analysis-methods" class="slide level2">
 <h2>Overview of the Analysis Methods</h2>
-<div class="r-stack">
-<p><img data-src="figures/QCandPreprocessing.png" class="fragment" width="1950" height="550"></p>
-<p><img data-src="figures/GeoMxSet_Object_Overview.png" class="fragment" width="1950" height="550"></p>
-</div>
-<aside class="notes">
-<p>Speaker notes go here</p>
+
+<img data-src="figures/QCandPreprocessing.png" class="r-stretch"><aside class="notes">
+<p>The steps above encompass the standard pre-processing workflow for GeoMx data. In short, they represent the selection of ROI/AOI segments and genes based on quality control (QC) or limit of quantification (LOQ) metrics and data normalization.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -490,36 +487,6 @@
 <span id="cb1-11"><a href="#cb1-11"></a>library(pheatmap)  # for heatmap</span>
 <span id="cb1-12"><a href="#cb1-12"></a>library(ggrepel)   # repel overlapping text labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="take-home-highlights" class="slide level2">
-<h2>Take Home Highlights</h2>
-<ul>
-<li>QC &amp; Pre-processing and Normalization</li>
-<li>Unsupervised Analysis
-<ul>
-<li>UMAP &amp; t-SNE plots</li>
-<li>Clustering high coefficient of variation (CV) genes (heatmap)</li>
-</ul></li>
-<li>Visualizing Differential Expression
-<ul>
-<li>Volcano Plot</li>
-<li>MA plot</li>
-<li>heatmap</li>
-</ul></li>
-</ul>
-<aside class="notes">
-<p>Speaker notes go here</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
 <section>
 <section id="selected-interesting-results" class="title-slide slide level1 center">
 <h1>Selected Interesting Results</h1>
@@ -527,27 +494,28 @@
 </section>
 <section id="qc-pre-processing" class="slide level2">
 <h2>QC &amp; Pre-processing</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>col_by &lt;- "segment"</span>
-<span id="cb2-2"><a href="#cb2-2"></a># Graphical summaries of QC statistics plot function</span>
-<span id="cb2-3"><a href="#cb2-3"></a>QC_histogram &lt;- function(assay_data = NULL,</span>
-<span id="cb2-4"><a href="#cb2-4"></a>                         annotation = NULL,</span>
-<span id="cb2-5"><a href="#cb2-5"></a>                         fill_by = NULL,</span>
-<span id="cb2-6"><a href="#cb2-6"></a>                         thr = NULL,</span>
-<span id="cb2-7"><a href="#cb2-7"></a>                         scale_trans = NULL) {</span>
-<span id="cb2-8"><a href="#cb2-8"></a>    plt &lt;- ggplot(assay_data,</span>
-<span id="cb2-9"><a href="#cb2-9"></a>                  aes_string(x = paste0("unlist(`", annotation, "`)"),</span>
-<span id="cb2-10"><a href="#cb2-10"></a>                             fill = fill_by)) +</span>
-<span id="cb2-11"><a href="#cb2-11"></a>        geom_histogram(bins = 50) +</span>
-<span id="cb2-12"><a href="#cb2-12"></a>        geom_vline(xintercept = thr, lty = "dashed", color = "black") +</span>
-<span id="cb2-13"><a href="#cb2-13"></a>        theme_bw() + guides(fill = "none") +</span>
-<span id="cb2-14"><a href="#cb2-14"></a>        facet_wrap(as.formula(paste("~", fill_by)), nrow = 4) +</span>
-<span id="cb2-15"><a href="#cb2-15"></a>        labs(x = annotation, y = "Segments, #", title = annotation)</span>
-<span id="cb2-16"><a href="#cb2-16"></a>    if(!is.null(scale_trans)) {</span>
-<span id="cb2-17"><a href="#cb2-17"></a>        plt &lt;- plt +</span>
-<span id="cb2-18"><a href="#cb2-18"></a>            scale_x_continuous(trans = scale_trans)</span>
-<span id="cb2-19"><a href="#cb2-19"></a>    }</span>
-<span id="cb2-20"><a href="#cb2-20"></a>    plt</span>
-<span id="cb2-21"><a href="#cb2-21"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2"></a>col_by &lt;- "segment"</span>
+<span id="cb2-3"><a href="#cb2-3"></a># Graphical summaries of QC statistics plot function</span>
+<span id="cb2-4"><a href="#cb2-4"></a>QC_histogram &lt;- function(assay_data = NULL,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>                         annotation = NULL,</span>
+<span id="cb2-6"><a href="#cb2-6"></a>                         fill_by = NULL,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>                         thr = NULL,</span>
+<span id="cb2-8"><a href="#cb2-8"></a>                         scale_trans = NULL) {</span>
+<span id="cb2-9"><a href="#cb2-9"></a>    plt &lt;- ggplot(assay_data,</span>
+<span id="cb2-10"><a href="#cb2-10"></a>                  aes_string(x = paste0("unlist(`", annotation, "`)"),</span>
+<span id="cb2-11"><a href="#cb2-11"></a>                             fill = fill_by)) +</span>
+<span id="cb2-12"><a href="#cb2-12"></a>        geom_histogram(bins = 50) +</span>
+<span id="cb2-13"><a href="#cb2-13"></a>        geom_vline(xintercept = thr, lty = "dashed", color = "black") +</span>
+<span id="cb2-14"><a href="#cb2-14"></a>        theme_bw() + guides(fill = "none") +</span>
+<span id="cb2-15"><a href="#cb2-15"></a>        facet_wrap(as.formula(paste("~", fill_by)), nrow = 4) +</span>
+<span id="cb2-16"><a href="#cb2-16"></a>        labs(x = annotation, y = "Segments, #", title = annotation)</span>
+<span id="cb2-17"><a href="#cb2-17"></a>    if(!is.null(scale_trans)) {</span>
+<span id="cb2-18"><a href="#cb2-18"></a>        plt &lt;- plt +</span>
+<span id="cb2-19"><a href="#cb2-19"></a>            scale_x_continuous(trans = scale_trans)</span>
+<span id="cb2-20"><a href="#cb2-20"></a>    }</span>
+<span id="cb2-21"><a href="#cb2-21"></a>    plt</span>
+<span id="cb2-22"><a href="#cb2-22"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <aside class="notes">
 <p>Speaker notes go here</p>
 <style type="text/css">
@@ -564,45 +532,12 @@
 </section>
 <section id="qc-pre-processing-1" class="slide level2">
 <h2>QC &amp; Pre-processing</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>QC_histogram(sData(demoData), "Trimmed (%)", col_by, 80)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><img data-src="figures/unnamed-chunk-11-1.png" class="absolute" style="width: 1650px; height: 550px; "></p>
-<aside class="notes">
-<p>Speaker notes go here</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="qc-pre-processing-2" class="slide level2">
-<h2>QC &amp; Pre-processing</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a># Plot detection rate:</span>
-<span id="cb4-2"><a href="#cb4-2"></a>plot_detect &lt;- data.frame(Freq = c(1, 5, 10, 20, 30, 50))</span>
-<span id="cb4-3"><a href="#cb4-3"></a>plot_detect$Number &lt;-</span>
-<span id="cb4-4"><a href="#cb4-4"></a>    unlist(lapply(c(0.01, 0.05, 0.1, 0.2, 0.3, 0.5),</span>
-<span id="cb4-5"><a href="#cb4-5"></a>                  function(x) {sum(fData(target_demoData)$DetectionRate &gt;= x)}))</span>
-<span id="cb4-6"><a href="#cb4-6"></a>plot_detect$Rate &lt;- plot_detect$Number / nrow(fData(target_demoData))</span>
-<span id="cb4-7"><a href="#cb4-7"></a>rownames(plot_detect) &lt;- plot_detect$Freq</span>
-<span id="cb4-8"><a href="#cb4-8"></a></span>
-<span id="cb4-9"><a href="#cb4-9"></a>ggplot(plot_detect, aes(x = as.factor(Freq), y = Rate, fill = Rate)) +</span>
-<span id="cb4-10"><a href="#cb4-10"></a>    geom_bar(stat = "identity") +</span>
-<span id="cb4-11"><a href="#cb4-11"></a>    geom_text(aes(label = formatC(Number, format = "d", big.mark = ",")),</span>
-<span id="cb4-12"><a href="#cb4-12"></a>              vjust = 1.6, color = "black", size = 4) +</span>
-<span id="cb4-13"><a href="#cb4-13"></a>    scale_fill_gradient2(low = "orange2", mid = "lightblue",</span>
-<span id="cb4-14"><a href="#cb4-14"></a>                         high = "dodgerblue3", midpoint = 0.65,</span>
-<span id="cb4-15"><a href="#cb4-15"></a>                         limits = c(0,1),</span>
-<span id="cb4-16"><a href="#cb4-16"></a>                         labels = scales::percent) +</span>
-<span id="cb4-17"><a href="#cb4-17"></a>    theme_bw() +</span>
-<span id="cb4-18"><a href="#cb4-18"></a>    scale_y_continuous(labels = scales::percent, limits = c(0,1),</span>
-<span id="cb4-19"><a href="#cb4-19"></a>                       expand = expansion(mult = c(0, 0))) +</span>
-<span id="cb4-20"><a href="#cb4-20"></a>    labs(x = "% of Segments",</span>
-<span id="cb4-21"><a href="#cb4-21"></a>         y = "Genes Detected, % of Panel &gt; LOQ")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="r-stack">
+<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-8-1.png" class="absolute" style="width: 1950px; height: 550px; "> <img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-9-1.png" class="fragment" width="1950" height="550"></p>
+<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-10-1.png" class="fragment" width="1950" height="550"></p>
+<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-12-1.png" class="fragment" width="1950" height="550"></p>
+<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-13-1.png" class="fragment" width="1950" height="550"></p>
+</div>
 <aside class="notes">
 <p>Before the data was summarized into gene-level count data, low-performing probes were removed. Basically this QC is an outlier removal process, whereby probes are either removed entirely from the study or from specific segments.</p>
 <style type="text/css">
@@ -617,7 +552,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="qc-pre-processing-3" class="slide level2">
+<section id="qc-pre-processing-2" class="slide level2">
 <h2>QC &amp; Pre-processing</h2>
 <p><img data-src="figures/unnamed-chunk-30-1.png" class="absolute" style="width: 1650px; height: 550px; "></p>
 <aside class="notes">
@@ -636,50 +571,8 @@
 </section>
 <section id="normalization" class="slide level2">
 <h2>Normalization</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>library(reshape2)  # for melt</span>
-<span id="cb5-2"><a href="#cb5-2"></a>library(cowplot)   # for plot_grid</span>
-<span id="cb5-3"><a href="#cb5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4"></a># Graph Q3 value vs negGeoMean of Negatives</span>
-<span id="cb5-5"><a href="#cb5-5"></a>ann_of_interest &lt;- "region"</span>
-<span id="cb5-6"><a href="#cb5-6"></a>Stat_data &lt;- </span>
-<span id="cb5-7"><a href="#cb5-7"></a>    data.frame(row.names = colnames(exprs(target_demoData)),</span>
-<span id="cb5-8"><a href="#cb5-8"></a>               Segment = colnames(exprs(target_demoData)),</span>
-<span id="cb5-9"><a href="#cb5-9"></a>               Annotation = pData(target_demoData)[, ann_of_interest],</span>
-<span id="cb5-10"><a href="#cb5-10"></a>               Q3 = unlist(apply(exprs(target_demoData), 2,</span>
-<span id="cb5-11"><a href="#cb5-11"></a>                                 quantile, 0.75, na.rm = TRUE)),</span>
-<span id="cb5-12"><a href="#cb5-12"></a>               NegProbe = exprs(target_demoData)[neg_probes, ])</span>
-<span id="cb5-13"><a href="#cb5-13"></a>Stat_data_m &lt;- melt(Stat_data, measure.vars = c("Q3", "NegProbe"),</span>
-<span id="cb5-14"><a href="#cb5-14"></a>                    variable.name = "Statistic", value.name = "Value")</span>
-<span id="cb5-15"><a href="#cb5-15"></a></span>
-<span id="cb5-16"><a href="#cb5-16"></a>plt1 &lt;- ggplot(Stat_data_m,</span>
-<span id="cb5-17"><a href="#cb5-17"></a>               aes(x = Value, fill = Statistic)) +</span>
-<span id="cb5-18"><a href="#cb5-18"></a>    geom_histogram(bins = 40) + theme_bw() +</span>
-<span id="cb5-19"><a href="#cb5-19"></a>    scale_x_continuous(trans = "log2") +</span>
-<span id="cb5-20"><a href="#cb5-20"></a>    facet_wrap(~Annotation, nrow = 1) + </span>
-<span id="cb5-21"><a href="#cb5-21"></a>    scale_fill_brewer(palette = 3, type = "qual") +</span>
-<span id="cb5-22"><a href="#cb5-22"></a>    labs(x = "Counts", y = "Segments, #")</span>
-<span id="cb5-23"><a href="#cb5-23"></a></span>
-<span id="cb5-24"><a href="#cb5-24"></a>plt2 &lt;- ggplot(Stat_data,</span>
-<span id="cb5-25"><a href="#cb5-25"></a>               aes(x = NegProbe, y = Q3, color = Annotation)) +</span>
-<span id="cb5-26"><a href="#cb5-26"></a>    geom_abline(intercept = 0, slope = 1, lty = "dashed", color = "darkgray") +</span>
-<span id="cb5-27"><a href="#cb5-27"></a>    geom_point() + guides(color = "none") + theme_bw() +</span>
-<span id="cb5-28"><a href="#cb5-28"></a>    scale_x_continuous(trans = "log2") + </span>
-<span id="cb5-29"><a href="#cb5-29"></a>    scale_y_continuous(trans = "log2") +</span>
-<span id="cb5-30"><a href="#cb5-30"></a>    theme(aspect.ratio = 1) +</span>
-<span id="cb5-31"><a href="#cb5-31"></a>    labs(x = "Negative Probe GeoMean, Counts", y = "Q3 Value, Counts")</span>
-<span id="cb5-32"><a href="#cb5-32"></a></span>
-<span id="cb5-33"><a href="#cb5-33"></a>plt3 &lt;- ggplot(Stat_data,</span>
-<span id="cb5-34"><a href="#cb5-34"></a>               aes(x = NegProbe, y = Q3 / NegProbe, color = Annotation)) +</span>
-<span id="cb5-35"><a href="#cb5-35"></a>    geom_hline(yintercept = 1, lty = "dashed", color = "darkgray") +</span>
-<span id="cb5-36"><a href="#cb5-36"></a>    geom_point() + theme_bw() +</span>
-<span id="cb5-37"><a href="#cb5-37"></a>    scale_x_continuous(trans = "log2") + </span>
-<span id="cb5-38"><a href="#cb5-38"></a>    scale_y_continuous(trans = "log2") +</span>
-<span id="cb5-39"><a href="#cb5-39"></a>    theme(aspect.ratio = 1) +</span>
-<span id="cb5-40"><a href="#cb5-40"></a>    labs(x = "Negative Probe GeoMean, Counts", y = "Q3/NegProbe Value, Counts")</span>
-<span id="cb5-41"><a href="#cb5-41"></a></span>
-<span id="cb5-42"><a href="#cb5-42"></a>btm_row &lt;- plot_grid(plt2, plt3, nrow = 1, labels = c("B", ""),</span>
-<span id="cb5-43"><a href="#cb5-43"></a>                     rel_widths = c(0.43,0.57))</span>
-<span id="cb5-44"><a href="#cb5-44"></a>plot_grid(plt1, btm_row, ncol = 1, labels = c("A", ""))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Normalize the GeoMx data for downstream visualizations and differential expression.</p>
+<p><img data-src="GEOMx-NGS_files/figure-revealjs/unnamed-chunk-32-1.png" class="fragment" width="1150" height="450"></p>
 <aside class="notes">
 <p>Here the researchers explored the relationship between the upper quartile (Q3) of the counts in each segment with the geometric mean of the negative control probes in the data.</p>
 <style type="text/css">
@@ -715,52 +608,8 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<aside class="notes">
-<p>Speaker notes go here</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="dimention-reduction" class="slide level2">
-<h2>Dimention Reduction</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>library(umap)</span>
-<span id="cb6-2"><a href="#cb6-2"></a>library(Rtsne)</span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a># update defaults for umap to contain a stable random_state (seed)</span>
-<span id="cb6-5"><a href="#cb6-5"></a>custom_umap &lt;- umap::umap.defaults</span>
-<span id="cb6-6"><a href="#cb6-6"></a>custom_umap$random_state &lt;- 42</span>
-<span id="cb6-7"><a href="#cb6-7"></a># run UMAP</span>
-<span id="cb6-8"><a href="#cb6-8"></a>umap_out &lt;-</span>
-<span id="cb6-9"><a href="#cb6-9"></a>    umap(t(log2(assayDataElement(target_demoData , elt = "q_norm"))),  </span>
-<span id="cb6-10"><a href="#cb6-10"></a>         config = custom_umap)</span>
-<span id="cb6-11"><a href="#cb6-11"></a>pData(target_demoData)[, c("UMAP1", "UMAP2")] &lt;- umap_out$layout[, c(1,2)]</span>
-<span id="cb6-12"><a href="#cb6-12"></a>ggplot(pData(target_demoData),</span>
-<span id="cb6-13"><a href="#cb6-13"></a>       aes(x = UMAP1, y = UMAP2, color = region, shape = class)) +</span>
-<span id="cb6-14"><a href="#cb6-14"></a>    geom_point(size = 3) +</span>
-<span id="cb6-15"><a href="#cb6-15"></a>    theme_bw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<aside class="notes">
-<p>Speaker notes go here</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="dimention-reduction-1" class="slide level2">
 <h2>Dimention Reduction</h2>
 
 <img data-src="figures/unnamed-chunk-37-1.png" class="r-stretch"><aside class="notes">
@@ -777,33 +626,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="dimention-reduction-2" class="slide level2">
-<h2>Dimention Reduction</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a># run tSNE</span>
-<span id="cb7-2"><a href="#cb7-2"></a>set.seed(42) # set the seed for tSNE as well</span>
-<span id="cb7-3"><a href="#cb7-3"></a>tsne_out &lt;-</span>
-<span id="cb7-4"><a href="#cb7-4"></a>    Rtsne(t(log2(assayDataElement(target_demoData , elt = "q_norm"))),</span>
-<span id="cb7-5"><a href="#cb7-5"></a>          perplexity = ncol(target_demoData)*.15)</span>
-<span id="cb7-6"><a href="#cb7-6"></a>pData(target_demoData)[, c("tSNE1", "tSNE2")] &lt;- tsne_out$Y[, c(1,2)]</span>
-<span id="cb7-7"><a href="#cb7-7"></a>ggplot(pData(target_demoData),</span>
-<span id="cb7-8"><a href="#cb7-8"></a>       aes(x = tSNE1, y = tSNE2, color = region, shape = class)) +</span>
-<span id="cb7-9"><a href="#cb7-9"></a>    geom_point(size = 3) +</span>
-<span id="cb7-10"><a href="#cb7-10"></a>    theme_bw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<aside class="notes">
-<p>Speaker notes go here</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="dimention-reduction-3" class="slide level2">
+<section id="dimention-reduction-1" class="slide level2">
 <h2>Dimention Reduction</h2>
 
 <img data-src="figures/unnamed-chunk-38-1.png" class="r-stretch"><aside class="notes">
@@ -822,33 +645,34 @@
 </section>
 <section id="clustering-high-cv-genes" class="slide level2">
 <h2>Clustering High CV Genes</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>library(pheatmap)  # for pheatmap</span>
-<span id="cb8-2"><a href="#cb8-2"></a># create a log2 transform of the data for analysis</span>
-<span id="cb8-3"><a href="#cb8-3"></a>assayDataElement(object = target_demoData, elt = "log_q") &lt;-</span>
-<span id="cb8-4"><a href="#cb8-4"></a>    assayDataApply(target_demoData, 2, FUN = log, base = 2, elt = "q_norm")</span>
-<span id="cb8-5"><a href="#cb8-5"></a></span>
-<span id="cb8-6"><a href="#cb8-6"></a># create CV function</span>
-<span id="cb8-7"><a href="#cb8-7"></a>calc_CV &lt;- function(x) {sd(x) / mean(x)}</span>
-<span id="cb8-8"><a href="#cb8-8"></a>CV_dat &lt;- assayDataApply(target_demoData,</span>
-<span id="cb8-9"><a href="#cb8-9"></a>                         elt = "log_q", MARGIN = 1, calc_CV)</span>
-<span id="cb8-10"><a href="#cb8-10"></a># show the highest CD genes and their CV values</span>
-<span id="cb8-11"><a href="#cb8-11"></a>sort(CV_dat, decreasing = TRUE)[1:5]</span>
-<span id="cb8-12"><a href="#cb8-12"></a>#&gt;   CAMK2N1    AKR1C1      AQP2     GDF15       REN </span>
-<span id="cb8-13"><a href="#cb8-13"></a>#&gt; 0.5886006 0.5114973 0.4607206 0.4196469 0.4193216</span>
-<span id="cb8-14"><a href="#cb8-14"></a></span>
-<span id="cb8-15"><a href="#cb8-15"></a># Identify genes in the top 3rd of the CV values</span>
-<span id="cb8-16"><a href="#cb8-16"></a>GOI &lt;- names(CV_dat)[CV_dat &gt; quantile(CV_dat, 0.8)]</span>
-<span id="cb8-17"><a href="#cb8-17"></a>pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),</span>
-<span id="cb8-18"><a href="#cb8-18"></a>         scale = "row", </span>
-<span id="cb8-19"><a href="#cb8-19"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
-<span id="cb8-20"><a href="#cb8-20"></a>         border_color = NA,</span>
-<span id="cb8-21"><a href="#cb8-21"></a>         clustering_method = "average",</span>
-<span id="cb8-22"><a href="#cb8-22"></a>         clustering_distance_rows = "correlation",</span>
-<span id="cb8-23"><a href="#cb8-23"></a>         clustering_distance_cols = "correlation",</span>
-<span id="cb8-24"><a href="#cb8-24"></a>         breaks = seq(-3, 3, 0.05),</span>
-<span id="cb8-25"><a href="#cb8-25"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
-<span id="cb8-26"><a href="#cb8-26"></a>         annotation_col = </span>
-<span id="cb8-27"><a href="#cb8-27"></a>             pData(target_demoData)[, c("class", "segment", "region")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2"></a>library(pheatmap)  # for pheatmap</span>
+<span id="cb3-3"><a href="#cb3-3"></a># create a log2 transform of the data for analysis</span>
+<span id="cb3-4"><a href="#cb3-4"></a>assayDataElement(object = target_demoData, elt = "log_q") &lt;-</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    assayDataApply(target_demoData, 2, FUN = log, base = 2, elt = "q_norm")</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a># create CV function</span>
+<span id="cb3-8"><a href="#cb3-8"></a>calc_CV &lt;- function(x) {sd(x) / mean(x)}</span>
+<span id="cb3-9"><a href="#cb3-9"></a>CV_dat &lt;- assayDataApply(target_demoData,</span>
+<span id="cb3-10"><a href="#cb3-10"></a>                         elt = "log_q", MARGIN = 1, calc_CV)</span>
+<span id="cb3-11"><a href="#cb3-11"></a># show the highest CD genes and their CV values</span>
+<span id="cb3-12"><a href="#cb3-12"></a>sort(CV_dat, decreasing = TRUE)[1:5]</span>
+<span id="cb3-13"><a href="#cb3-13"></a>#&gt;   CAMK2N1    AKR1C1      AQP2     GDF15       REN </span>
+<span id="cb3-14"><a href="#cb3-14"></a>#&gt; 0.5886006 0.5114973 0.4607206 0.4196469 0.4193216</span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a># Identify genes in the top 3rd of the CV values</span>
+<span id="cb3-17"><a href="#cb3-17"></a>GOI &lt;- names(CV_dat)[CV_dat &gt; quantile(CV_dat, 0.8)]</span>
+<span id="cb3-18"><a href="#cb3-18"></a>pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),</span>
+<span id="cb3-19"><a href="#cb3-19"></a>         scale = "row", </span>
+<span id="cb3-20"><a href="#cb3-20"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
+<span id="cb3-21"><a href="#cb3-21"></a>         border_color = NA,</span>
+<span id="cb3-22"><a href="#cb3-22"></a>         clustering_method = "average",</span>
+<span id="cb3-23"><a href="#cb3-23"></a>         clustering_distance_rows = "correlation",</span>
+<span id="cb3-24"><a href="#cb3-24"></a>         clustering_distance_cols = "correlation",</span>
+<span id="cb3-25"><a href="#cb3-25"></a>         breaks = seq(-3, 3, 0.05),</span>
+<span id="cb3-26"><a href="#cb3-26"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
+<span id="cb3-27"><a href="#cb3-27"></a>         annotation_col = </span>
+<span id="cb3-28"><a href="#cb3-28"></a>             pData(target_demoData)[, c("class", "segment", "region")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <aside class="notes">
 <p>Speaker notes go here</p>
 <style type="text/css">
@@ -882,71 +706,6 @@
 </section>
 <section id="visualizing-de-genes-volcano" class="slide level2">
 <h2>Visualizing DE Genes (Volcano)</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href="#cb9-1"></a>library(ggrepel) </span>
-<span id="cb9-2"><a href="#cb9-2"></a># Categorize Results based on P-value &amp; FDR for plotting</span>
-<span id="cb9-3"><a href="#cb9-3"></a>results$Color &lt;- "NS or FC &lt; 0.5"</span>
-<span id="cb9-4"><a href="#cb9-4"></a>results$Color[results$`Pr(&gt;|t|)` &lt; 0.05] &lt;- "P &lt; 0.05"</span>
-<span id="cb9-5"><a href="#cb9-5"></a>results$Color[results$FDR &lt; 0.05] &lt;- "FDR &lt; 0.05"</span>
-<span id="cb9-6"><a href="#cb9-6"></a>results$Color[results$FDR &lt; 0.001] &lt;- "FDR &lt; 0.001"</span>
-<span id="cb9-7"><a href="#cb9-7"></a>results$Color[abs(results$Estimate) &lt; 0.5] &lt;- "NS or FC &lt; 0.5"</span>
-<span id="cb9-8"><a href="#cb9-8"></a>results$Color &lt;- factor(results$Color,</span>
-<span id="cb9-9"><a href="#cb9-9"></a>                        levels = c("NS or FC &lt; 0.5", "P &lt; 0.05",</span>
-<span id="cb9-10"><a href="#cb9-10"></a>                                   "FDR &lt; 0.05", "FDR &lt; 0.001"))</span>
-<span id="cb9-11"><a href="#cb9-11"></a></span>
-<span id="cb9-12"><a href="#cb9-12"></a># pick top genes for either side of volcano to label</span>
-<span id="cb9-13"><a href="#cb9-13"></a># order genes for convenience:</span>
-<span id="cb9-14"><a href="#cb9-14"></a>results$invert_P &lt;- (-log10(results$`Pr(&gt;|t|)`)) * sign(results$Estimate)</span>
-<span id="cb9-15"><a href="#cb9-15"></a>top_g &lt;- c()</span>
-<span id="cb9-16"><a href="#cb9-16"></a>for(cond in c("DKD", "normal")) {</span>
-<span id="cb9-17"><a href="#cb9-17"></a>    ind &lt;- results$Subset == cond</span>
-<span id="cb9-18"><a href="#cb9-18"></a>    top_g &lt;- c(top_g,</span>
-<span id="cb9-19"><a href="#cb9-19"></a>               results[ind, 'Gene'][</span>
-<span id="cb9-20"><a href="#cb9-20"></a>                   order(results[ind, 'invert_P'], decreasing = TRUE)[1:15]],</span>
-<span id="cb9-21"><a href="#cb9-21"></a>               results[ind, 'Gene'][</span>
-<span id="cb9-22"><a href="#cb9-22"></a>                   order(results[ind, 'invert_P'], decreasing = FALSE)[1:15]])</span>
-<span id="cb9-23"><a href="#cb9-23"></a>}</span>
-<span id="cb9-24"><a href="#cb9-24"></a>top_g &lt;- unique(top_g)</span>
-<span id="cb9-25"><a href="#cb9-25"></a>results &lt;- results[, -1*ncol(results)] # remove invert_P from matrix</span>
-<span id="cb9-26"><a href="#cb9-26"></a></span>
-<span id="cb9-27"><a href="#cb9-27"></a># Graph results</span>
-<span id="cb9-28"><a href="#cb9-28"></a>ggplot(results,</span>
-<span id="cb9-29"><a href="#cb9-29"></a>       aes(x = Estimate, y = -log10(`Pr(&gt;|t|)`),</span>
-<span id="cb9-30"><a href="#cb9-30"></a>           color = Color, label = Gene)) +</span>
-<span id="cb9-31"><a href="#cb9-31"></a>    geom_vline(xintercept = c(0.5, -0.5), lty = "dashed") +</span>
-<span id="cb9-32"><a href="#cb9-32"></a>    geom_hline(yintercept = -log10(0.05), lty = "dashed") +</span>
-<span id="cb9-33"><a href="#cb9-33"></a>    geom_point() +</span>
-<span id="cb9-34"><a href="#cb9-34"></a>    labs(x = "Enriched in Tubules &lt;- log2(FC) -&gt; Enriched in Glomeruli",</span>
-<span id="cb9-35"><a href="#cb9-35"></a>         y = "Significance, -log10(P)",</span>
-<span id="cb9-36"><a href="#cb9-36"></a>         color = "Significance") +</span>
-<span id="cb9-37"><a href="#cb9-37"></a>    scale_color_manual(values = c(`FDR &lt; 0.001` = "dodgerblue",</span>
-<span id="cb9-38"><a href="#cb9-38"></a>                                  `FDR &lt; 0.05` = "lightblue",</span>
-<span id="cb9-39"><a href="#cb9-39"></a>                                  `P &lt; 0.05` = "orange2",</span>
-<span id="cb9-40"><a href="#cb9-40"></a>                                  `NS or FC &lt; 0.5` = "gray"),</span>
-<span id="cb9-41"><a href="#cb9-41"></a>                       guide = guide_legend(override.aes = list(size = 4))) +</span>
-<span id="cb9-42"><a href="#cb9-42"></a>    scale_y_continuous(expand = expansion(mult = c(0,0.05))) +</span>
-<span id="cb9-43"><a href="#cb9-43"></a>    geom_text_repel(data = subset(results, Gene %in% top_g &amp; FDR &lt; 0.001),</span>
-<span id="cb9-44"><a href="#cb9-44"></a>                    size = 4, point.padding = 0.15, color = "black",</span>
-<span id="cb9-45"><a href="#cb9-45"></a>                    min.segment.length = .1, box.padding = .2, lwd = 2,</span>
-<span id="cb9-46"><a href="#cb9-46"></a>                    max.overlaps = 50) +</span>
-<span id="cb9-47"><a href="#cb9-47"></a>    theme_bw(base_size = 16) +</span>
-<span id="cb9-48"><a href="#cb9-48"></a>    theme(legend.position = "bottom") +</span>
-<span id="cb9-49"><a href="#cb9-49"></a>    facet_wrap(~Subset, scales = "free_y")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<aside class="notes">
-<p>Speaker notes go here</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="visualizing-de-genes-volcano-1" class="slide level2">
-<h2>Visualizing DE Genes (Volcano)</h2>
 <p><img data-src="figures/unnamed-chunk-44-1.png" class="absolute" style="width: 1650px; height: 550px; "></p>
 <aside class="notes">
 <p>Speaker notes go here</p>
@@ -963,50 +722,6 @@
       }</style></aside>
 </section>
 <section id="visualizing-de-genes-ma-plot" class="slide level2">
-<h2>Visualizing DE Genes (MA Plot)</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href="#cb10-1"></a>results$MeanExp &lt;-</span>
-<span id="cb10-2"><a href="#cb10-2"></a>    rowMeans(assayDataElement(target_demoData,</span>
-<span id="cb10-3"><a href="#cb10-3"></a>                              elt = "q_norm"))</span>
-<span id="cb10-4"><a href="#cb10-4"></a></span>
-<span id="cb10-5"><a href="#cb10-5"></a>top_g2 &lt;- results$Gene[results$Gene %in% top_g &amp;</span>
-<span id="cb10-6"><a href="#cb10-6"></a>                           results$FDR &lt; 0.001 &amp;</span>
-<span id="cb10-7"><a href="#cb10-7"></a>                           abs(results$Estimate) &gt; .5 &amp;</span>
-<span id="cb10-8"><a href="#cb10-8"></a>                           results$MeanExp &gt; quantile(results$MeanExp, 0.9)]</span>
-<span id="cb10-9"><a href="#cb10-9"></a></span>
-<span id="cb10-10"><a href="#cb10-10"></a>ggplot(subset(results, !Gene %in% neg_probes),</span>
-<span id="cb10-11"><a href="#cb10-11"></a>       aes(x = MeanExp, y = Estimate,</span>
-<span id="cb10-12"><a href="#cb10-12"></a>           size = -log10(`Pr(&gt;|t|)`),</span>
-<span id="cb10-13"><a href="#cb10-13"></a>           color = Color, label = Gene)) +</span>
-<span id="cb10-14"><a href="#cb10-14"></a>    geom_hline(yintercept = c(0.5, -0.5), lty = "dashed") +</span>
-<span id="cb10-15"><a href="#cb10-15"></a>    scale_x_continuous(trans = "log2") +</span>
-<span id="cb10-16"><a href="#cb10-16"></a>    geom_point(alpha = 0.5) + </span>
-<span id="cb10-17"><a href="#cb10-17"></a>    labs(y = "Enriched in Glomeruli &lt;- log2(FC) -&gt; Enriched in Tubules",</span>
-<span id="cb10-18"><a href="#cb10-18"></a>         x = "Mean Expression",</span>
-<span id="cb10-19"><a href="#cb10-19"></a>         color = "Significance") +</span>
-<span id="cb10-20"><a href="#cb10-20"></a>    scale_color_manual(values = c(`FDR &lt; 0.001` = "dodgerblue",</span>
-<span id="cb10-21"><a href="#cb10-21"></a>                                  `FDR &lt; 0.05` = "lightblue",</span>
-<span id="cb10-22"><a href="#cb10-22"></a>                                  `P &lt; 0.05` = "orange2",</span>
-<span id="cb10-23"><a href="#cb10-23"></a>                                  `NS or FC &lt; 0.5` = "gray")) +</span>
-<span id="cb10-24"><a href="#cb10-24"></a>    geom_text_repel(data = subset(results, Gene %in% top_g2),</span>
-<span id="cb10-25"><a href="#cb10-25"></a>                    size = 4, point.padding = 0.15, color = "black",</span>
-<span id="cb10-26"><a href="#cb10-26"></a>                    min.segment.length = .1, box.padding = .2, lwd = 2) +</span>
-<span id="cb10-27"><a href="#cb10-27"></a>    theme_bw(base_size = 16) +</span>
-<span id="cb10-28"><a href="#cb10-28"></a>    facet_wrap(~Subset, nrow = 2, ncol = 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<aside class="notes">
-<p>Speaker notes go here</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="visualizing-de-genes-ma-plot-1" class="slide level2">
 <h2>Visualizing DE Genes (MA Plot)</h2>
 <p><img data-src="figures/unnamed-chunk-45-1.png" class="absolute" style="width: 1650px; height: 550px; "></p>
 <aside class="notes">
@@ -1025,19 +740,19 @@
 </section>
 <section id="visualizing-de-genes-heatmap" class="slide level2">
 <h2>Visualizing DE Genes (Heatmap)</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a href="#cb11-1"></a># select top significant genes based on significance, plot with pheatmap</span>
-<span id="cb11-2"><a href="#cb11-2"></a>GOI &lt;- unique(subset(results, `FDR` &lt; 0.001)$Gene)</span>
-<span id="cb11-3"><a href="#cb11-3"></a>pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),</span>
-<span id="cb11-4"><a href="#cb11-4"></a>         scale = "row", </span>
-<span id="cb11-5"><a href="#cb11-5"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
-<span id="cb11-6"><a href="#cb11-6"></a>         border_color = NA,</span>
-<span id="cb11-7"><a href="#cb11-7"></a>         clustering_method = "average",</span>
-<span id="cb11-8"><a href="#cb11-8"></a>         clustering_distance_rows = "correlation",</span>
-<span id="cb11-9"><a href="#cb11-9"></a>         clustering_distance_cols = "correlation",</span>
-<span id="cb11-10"><a href="#cb11-10"></a>         cutree_cols = 2, cutree_rows = 2,</span>
-<span id="cb11-11"><a href="#cb11-11"></a>         breaks = seq(-3, 3, 0.05),</span>
-<span id="cb11-12"><a href="#cb11-12"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
-<span id="cb11-13"><a href="#cb11-13"></a>         annotation_col = pData(target_demoData)[, c("region", "class")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a># select top significant genes based on significance, plot with pheatmap</span>
+<span id="cb4-2"><a href="#cb4-2"></a>GOI &lt;- unique(subset(results, `FDR` &lt; 0.001)$Gene)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),</span>
+<span id="cb4-4"><a href="#cb4-4"></a>         scale = "row", </span>
+<span id="cb4-5"><a href="#cb4-5"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>         border_color = NA,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>         clustering_method = "average",</span>
+<span id="cb4-8"><a href="#cb4-8"></a>         clustering_distance_rows = "correlation",</span>
+<span id="cb4-9"><a href="#cb4-9"></a>         clustering_distance_cols = "correlation",</span>
+<span id="cb4-10"><a href="#cb4-10"></a>         cutree_cols = 2, cutree_rows = 2,</span>
+<span id="cb4-11"><a href="#cb4-11"></a>         breaks = seq(-3, 3, 0.05),</span>
+<span id="cb4-12"><a href="#cb4-12"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
+<span id="cb4-13"><a href="#cb4-13"></a>         annotation_col = pData(target_demoData)[, c("region", "class")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <aside class="notes">
 <p>Speaker notes go here</p>
 <style type="text/css">
@@ -1069,11 +784,43 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="conclusion" class="slide level2">
-<h2>Conclusion</h2>
+<section id="take-home-highlights" class="slide level2">
+<h2>Take Home Highlights</h2>
+<ul>
+<li>QC &amp; Pre-processing and Normalization</li>
+<li>Unsupervised Analysis
+<ul>
+<li>UMAP &amp; t-SNE plots</li>
+<li>Clustering high coefficient of variation (CV) genes (heatmap)</li>
+</ul></li>
+<li>Visualizing Differential Expression
+<ul>
+<li>Volcano Plot</li>
+<li>MA plot</li>
+<li>heatmap</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Speaker notes go here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1 center">
+<h1>Conclusion</h1>
+
 </section>
-<section id="learned-insteresting-skills" class="slide level2">
-<h2>Learned Insteresting Skills</h2>
+<section id="learned-interesting-skills" class="slide level2">
+<h2>Learned Interesting Skills</h2>
 <ul>
 <li>How to plot UMAP &amp; t-SNE Plots</li>
 <li>How to plot volcano plot and MA plot</li>
