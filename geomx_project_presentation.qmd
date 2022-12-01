@@ -190,13 +190,11 @@ Speaker notes go here
 ![](figures/unnamed-chunk-37-1.png)
 
 ::: notes
-One common approach to understanding high-plex data is dimension reduction.
-Two common methods are UMAP and tSNE, which can cluster samples based on overall gene expression. 
-Either UMAP or tSNE can cluster of segments related to tissue structure and disease status.
+One common approach to understanding high-plex data is dimension reduction. Two common methods are UMAP and tSNE, which can cluster samples based on overall gene expression. Either UMAP or tSNE can cluster of segments related to tissue structure and disease status.
 :::
 
-
 ## Dimention Reduction (UMAP)
+
 ``` {{r}}
 library(umap)
 # update defaults for umap to contain a stable random_state (seed)
@@ -213,14 +211,11 @@ ggplot(pData(target_demoData),
     theme_bw()
 ```
 
-
-
 ## Dimention Reduction (t-SNE)
 
 ![](figures/unnamed-chunk-38-1.png)
 
 ## Dimention Reduction (t-SNE)
-
 
 ``` {{r}}
 library(Rtsne)
@@ -235,20 +230,13 @@ ggplot(pData(target_demoData),
     theme_bw()
 ```
 
-
-
-
 ## Clustering High CV Genes
 
 ![](figures/unnamed-chunk-39-1.png){.absolute width="1650" height="550"}
 
 ::: notes
-Another approach to explore the data is to calculate the coefficient of variation (CV) for each gene.
-This unbiased approach can reveal highly variable genes across the study.
-We plot the results using unsupervised hierarchical clustering, displayed as a heatmap.
+Another approach to explore the data is to calculate the coefficient of variation (CV) for each gene. This unbiased approach can reveal highly variable genes across the study. We plot the results using unsupervised hierarchical clustering, displayed as a heatmap.
 :::
-
-
 
 ## Clustering High CV Genes
 
@@ -282,21 +270,13 @@ pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),
              pData(target_demoData)[, c("class", "segment", "region")])
 ```
 
-
-
-
 ## Visualizing DE Genes (Volcano)
 
 ![](figures/unnamed-chunk-44-1.png){.absolute width="1750" height="550"}
 
 ::: notes
-A canonical visualization for interpreting differential gene expression results is the volcano plot.
-The volcano plot shows several genes that are significantly differentially expressed between glomeruli and tubules.
-Some are specific to the disease status of the sample.
-some genes have high fold change, but lower significance, because these genes appear to be behaving in a sample-specific manner rather than consistently across all kidney samples.
+A canonical visualization for interpreting differential gene expression results is the volcano plot. The volcano plot shows several genes that are significantly differentially expressed between glomeruli and tubules. Some are specific to the disease status of the sample. some genes have high fold change, but lower significance, because these genes appear to be behaving in a sample-specific manner rather than consistently across all kidney samples.
 :::
-
-
 
 ## Visualizing DE Genes (Volcano)
 
@@ -352,16 +332,12 @@ ggplot(results,
     facet_wrap(~Subset, scales = "free_y")
 ```
 
-
-
 ## Visualizing DE Genes (Heatmap)
 
 ![](figures/unnamed-chunk-47-1.png){.absolute width="1650" height="550"}
 
 ::: notes
-In addition, we can again create a heatmap to visualize DE genes. 
-we can use the P-value or FDR values to select genes. 
-Here, we plot all genes with an FDR < 0.001.
+In addition, we can again create a heatmap to visualize DE genes. we can use the P-value or FDR values to select genes. Here, we plot all genes with an FDR \< 0.001.
 :::
 
 ## Visualizing DE Genes (Heatmap)
@@ -382,8 +358,6 @@ pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),
          annotation_col = pData(target_demoData)[, c("region", "class")])
 ```
 
-
-
 ## Take Home Highlights
 
 -   QC & Pre-processing and Normalization
@@ -394,7 +368,6 @@ pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),
     -   Volcano Plot
     -   heatmap
 
-
 # Conclusion
 
 ## Learned Interesting Skills
@@ -404,11 +377,9 @@ pheatmap(log2(assayDataElement(target_demoData[GOI, ], elt = "q_norm")),
 -   How to plot heatmap using pheat packages
 -   QC & processing and normalization
 
-
 ## Challeges
 
 -   Install the Packages (Enviorment)
 -   Load the Data
 -   Understand the object and related functions from the packages
 -   QC & preprocessing
-
