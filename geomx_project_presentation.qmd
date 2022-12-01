@@ -73,11 +73,6 @@ demoData <-
 ::: notes
 They list the files in each directory for use. Here they load the data to create a data object using the readNanoSTringGEOMxSet function. Then they have all the expression, annotation, and probe information linked and stored together into a single data object
 :::
-<<<<<<< HEAD:geomx_presentation.qmd
-=======
-
-## Overview of the Analysis Methods
->>>>>>> main:geomx_project_presentation.qmd
 
 
 ## Overview of the Tools
@@ -254,10 +249,6 @@ assayDataElement(object = target_demoData, elt = "log_q") <-
 calc_CV <- function(x) {sd(x) / mean(x)}
 CV_dat <- assayDataApply(target_demoData,
                          elt = "log_q", MARGIN = 1, calc_CV)
-# show the highest CD genes and their CV values
-sort(CV_dat, decreasing = TRUE)[1:5]
-#>   CAMK2N1    AKR1C1      AQP2     GDF15       REN 
-#> 0.5886006 0.5114973 0.4607206 0.4196469 0.4193216
 
 # Identify genes in the top 3rd of the CV values
 GOI <- names(CV_dat)[CV_dat > quantile(CV_dat, 0.8)]

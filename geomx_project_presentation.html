@@ -714,24 +714,20 @@
 <span id="cb7-7"><a href="#cb7-7"></a>calc_CV &lt;- function(x) {sd(x) / mean(x)}</span>
 <span id="cb7-8"><a href="#cb7-8"></a>CV_dat &lt;- assayDataApply(target_demoData,</span>
 <span id="cb7-9"><a href="#cb7-9"></a>                         elt = "log_q", MARGIN = 1, calc_CV)</span>
-<span id="cb7-10"><a href="#cb7-10"></a># show the highest CD genes and their CV values</span>
-<span id="cb7-11"><a href="#cb7-11"></a>sort(CV_dat, decreasing = TRUE)[1:5]</span>
-<span id="cb7-12"><a href="#cb7-12"></a>#&gt;   CAMK2N1    AKR1C1      AQP2     GDF15       REN </span>
-<span id="cb7-13"><a href="#cb7-13"></a>#&gt; 0.5886006 0.5114973 0.4607206 0.4196469 0.4193216</span>
-<span id="cb7-14"><a href="#cb7-14"></a></span>
-<span id="cb7-15"><a href="#cb7-15"></a># Identify genes in the top 3rd of the CV values</span>
-<span id="cb7-16"><a href="#cb7-16"></a>GOI &lt;- names(CV_dat)[CV_dat &gt; quantile(CV_dat, 0.8)]</span>
-<span id="cb7-17"><a href="#cb7-17"></a>pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),</span>
-<span id="cb7-18"><a href="#cb7-18"></a>         scale = "row", </span>
-<span id="cb7-19"><a href="#cb7-19"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
-<span id="cb7-20"><a href="#cb7-20"></a>         border_color = NA,</span>
-<span id="cb7-21"><a href="#cb7-21"></a>         clustering_method = "average",</span>
-<span id="cb7-22"><a href="#cb7-22"></a>         clustering_distance_rows = "correlation",</span>
-<span id="cb7-23"><a href="#cb7-23"></a>         clustering_distance_cols = "correlation",</span>
-<span id="cb7-24"><a href="#cb7-24"></a>         breaks = seq(-3, 3, 0.05),</span>
-<span id="cb7-25"><a href="#cb7-25"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
-<span id="cb7-26"><a href="#cb7-26"></a>         annotation_col = </span>
-<span id="cb7-27"><a href="#cb7-27"></a>             pData(target_demoData)[, c("class", "segment", "region")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-10"><a href="#cb7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11"></a># Identify genes in the top 3rd of the CV values</span>
+<span id="cb7-12"><a href="#cb7-12"></a>GOI &lt;- names(CV_dat)[CV_dat &gt; quantile(CV_dat, 0.8)]</span>
+<span id="cb7-13"><a href="#cb7-13"></a>pheatmap(assayDataElement(target_demoData[GOI, ], elt = "log_q"),</span>
+<span id="cb7-14"><a href="#cb7-14"></a>         scale = "row", </span>
+<span id="cb7-15"><a href="#cb7-15"></a>         show_rownames = FALSE, show_colnames = FALSE,</span>
+<span id="cb7-16"><a href="#cb7-16"></a>         border_color = NA,</span>
+<span id="cb7-17"><a href="#cb7-17"></a>         clustering_method = "average",</span>
+<span id="cb7-18"><a href="#cb7-18"></a>         clustering_distance_rows = "correlation",</span>
+<span id="cb7-19"><a href="#cb7-19"></a>         clustering_distance_cols = "correlation",</span>
+<span id="cb7-20"><a href="#cb7-20"></a>         breaks = seq(-3, 3, 0.05),</span>
+<span id="cb7-21"><a href="#cb7-21"></a>         color = colorRampPalette(c("purple3", "black", "yellow2"))(120),</span>
+<span id="cb7-22"><a href="#cb7-22"></a>         annotation_col = </span>
+<span id="cb7-23"><a href="#cb7-23"></a>             pData(target_demoData)[, c("class", "segment", "region")])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="visualizing-de-genes-volcano" class="slide level2">
 <h2>Visualizing DE Genes (Volcano)</h2>
