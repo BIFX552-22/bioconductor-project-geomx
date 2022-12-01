@@ -2,5 +2,5 @@
 .DS_Store
 
 # Ignore R history files
-*.RData
-*.Rhistory
+.RData
+.Rhistory
